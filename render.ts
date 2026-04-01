@@ -12,6 +12,7 @@ async function readFileData() {
   const json = JSON.parse(cleanedContents);
   console.log("json:", json);
   return json;
+  // hello
 }
 interface DataFileContent {
   script: string;
