@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import { parseArgs } from "util";
 
 async function scriptToVoiceOver(text: string) {
   console.log("program running");
@@ -24,7 +25,6 @@ async function scriptToVoiceOver(text: string) {
     console.log("voiceover written to disk!");
   }
 }
-
 
 export async function generateScript(prompt: string) {
   //todo make the api swap models when in high demand
@@ -73,6 +73,7 @@ export async function generateScript(prompt: string) {
       ]
       "
       }
+      here is the description of the script i want you to write:
       `,
     },
   });
@@ -81,12 +82,22 @@ export async function generateScript(prompt: string) {
       .replace(/^```json\s*/i, "")
       .replace(/```\s*$/i, "")
       .trim();
-    Bun.write("./src/lib/data.json", cleanedContents);
+    Bun.write("./public/data.json", cleanedContents);
     // scriptToVoiceOver(response.text);
   }
 }
-generateScript("generate a super short script for a motivational tiktok.");
-
+const { values } = parseArgs({
+  args: Bun.argv,
+  options: {
+    m: {
+      type: "string",
+    },
+  },
+  strict: true,
+  allowPositionals: true,
+});
+const message = values.m?.toString();
+if (message) generateScript(message);
 // systemInstruction: `this script will be fed into a voice transcription api in it's entirety.
 //   you will be asked to produce some sort of script; when you do ensure that
 //   script only contains text no comments nothing in parenthesis or anything of the sort`,
