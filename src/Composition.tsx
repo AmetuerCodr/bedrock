@@ -100,7 +100,7 @@ function myRegex(Text: string): string[] {
 }
 
 // --- MAIN COMPOSITION WIRING ---
-type VideoProps = {
+export type VideoProps = {
   script: string[];
 }
 export const Video: React.FC<VideoProps> = ({script}) => {
