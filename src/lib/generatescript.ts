@@ -25,25 +25,69 @@ async function scriptToVoiceOver(text: string) {
   }
 }
 
+
 export async function generateScript(prompt: string) {
+  //todo make the api swap models when in high demand
+
+  // 13061 |         const errorMessage = JSON.stringify(errorBody);
+  // 13062 |         if (status >= 400 && status < 600) {
+  // 13063 |             const apiError = new ApiError({
+  //                                      ^
+  // ApiError: {"error":{"code":503,"message":"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.","status":"UNAVAILABLE"}}
+  //  status: 503,
   const ai = new GoogleGenAI({
-    apiKey: "AIzaSyADv-3Qbknvm4H4EpBtfOa0VSKTGJ1OvMM",
+    apiKey: Bun.env.GEMINI_API_KEY,
   });
-  // const id = Bun.randomUUIDv7();
-  // const file = Bun.file(`${id}.mp3`);
-  // const writer = file.writer();
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.5-flash",
     contents: prompt,
     config: {
-      systemInstruction: `this script will be fed into a voice transcription api in it's entirety.
-        you will be asked to produce some sort of script; when you do ensure that
-        script only contains text no comments nothing in parenthesis or anything of the sort`,
+      systemInstruction: `give no extra commentary, all you are to produce is some json output with the following structure:
+      {
+      "script": "[here is an example script] People will forget what you said... but people will never forget how you made them feel,"
+      "regExScript:" "
+
+      Your task here is to break a the script you made into a JSON array of strings based on these rules:
+
+      1. STRUCTURE: Elements must alternate between exactly TWO words and exactly ONE word.
+      2. EMPHASIS: Single-word elements must be the "anchor" words—verbs, nouns, or adjectives that carry the most meaning.
+      3. FLOW: Two-word elements should contain "functional" words (the, is, with, they).
+      4. FORMAT: Output ONLY a valid JSON array of strings.
+
+      Example:
+      Input: "The quick brown fox jumps over the lazy dog"
+      Output: ["The quick", "brown", "fox jumps", "over", "the lazy", "dog"]
+
+      based on our example script quote here is what the output would look like:
+      [
+      "People will",
+      "forget",
+      "what you",
+      "said...",
+      "but people",
+      "will never",
+      "forget",
+      "how you",
+      "made them",
+      "feel"
+      ]
+      "
+      }
+      `,
     },
   });
   if (response.text) {
-    Bun.write("script.txt", response.text);
-    scriptToVoiceOver(response.text);
+    const cleanedContents = response.text
+      .replace(/^```json\s*/i, "")
+      .replace(/```\s*$/i, "")
+      .trim();
+    Bun.write("./src/lib/data.json", cleanedContents);
+    // scriptToVoiceOver(response.text);
   }
 }
 generateScript("generate a super short script for a motivational tiktok.");
+
+// systemInstruction: `this script will be fed into a voice transcription api in it's entirety.
+//   you will be asked to produce some sort of script; when you do ensure that
+//   script only contains text no comments nothing in parenthesis or anything of the sort`,
+// },

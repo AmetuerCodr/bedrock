@@ -29,6 +29,8 @@
     "dev": "remotionb studio",
     "build": "remotionb bundle",
     "upgrade": "remotionb upgrade",
+    "generate": "bun src/lib/generatescript.ts",
+    "render": "bun render.ts",
     "lint": "eslint src && tsc"
   },
   "sideEffects": [

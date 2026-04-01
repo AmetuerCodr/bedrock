@@ -7,6 +7,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="KineticTypography"
         component={Video}
+        defaultProps={{ script: ["Preview", "text", "here"] }}
         durationInFrames={450}
         fps={30}
         width={1080}
