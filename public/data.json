@@ -1,11 +1,25 @@
 {
-  "script": "You are powerful. Believe in yourself. Make a change.",
-  "regExScript": [
+  "script": "Dispatch is a chilling VR game. You are a police dispatcher. Taking calls from victims. Soon, reality starts to blur. Can you discern what's true? Or will terror consume you?",
+  "wordGroups": [
+    "Dispatch is",
+    "chilling",
+    "VR game.",
     "You are",
-    "powerful.",
-    "Believe in",
-    "yourself.",
-    "Make a",
-    "change."
+    "a police",
+    "dispatcher.",
+    "Taking calls",
+    "from victims.",
+    "Soon, reality",
+    "starts to",
+    "blur.",
+    "Can you",
+    "discern",
+    "what's true?",
+    "Or will",
+    "terror",
+    "consume you?"
+  ],
+  "clipDurationInFrames": [
+    18, 30, 20, 18, 18, 30, 20, 22, 22, 18, 32, 18, 28, 25, 18, 35, 25
   ]
 }

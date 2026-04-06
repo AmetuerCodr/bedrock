@@ -23,7 +23,8 @@
     "@types/web": "0.0.166",
     "eslint": "9.19.0",
     "prettier": "3.8.1",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "@types/bun": "latest"
   },
   "scripts": {
     "dev": "remotionb studio",
@@ -35,5 +36,7 @@
   },
   "sideEffects": [
     "*.css"
-  ]
+  ],
+  "module": "src/index.ts",
+  "type": "module"
 }

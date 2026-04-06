@@ -18,10 +18,17 @@ export const RemotionRoot: React.FC = () => {
       const res = await fetch(staticFile("data.json"));
       if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
       const data = await res.json();
-      console.log("data:", data); // check browser console
+      const addedFrames = data.clipDurationInFrames.reduce(
+        (acc: number, d: number) => acc + d,
+        0,
+      ); // combines duration of all frames
+      console.log("data:", data);
       return {
-        props: { script: data.regExScript },
-        durationInFrames: data.regExScript.length * 15,
+        props: {
+          script: data.wordGroups,
+          clipDurationInFrames: data.clipDurationInFrames,
+        },
+        durationInFrames: addedFrames,
       };
     } catch (err) {
       console.error("calculateMetadata error:", err);
@@ -34,7 +41,10 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="KineticTypography"
         component={Video}
-        defaultProps={{ script: ["Preview", "text", "here"] }}
+        defaultProps={{
+          script: ["Preview", "text", "here"],
+          clipDurationInFrames: [15, 15, 15],
+        }}
         durationInFrames={450}
         calculateMetadata={func}
         fps={30}

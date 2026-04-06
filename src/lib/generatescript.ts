@@ -42,39 +42,58 @@ export async function generateScript(prompt: string) {
     model: "gemini-2.5-flash",
     contents: prompt,
     config: {
-      systemInstruction: `give no extra commentary, all you are to produce is some json output with the following structure:
+      systemInstruction: `You are a JSON generator. Produce NO commentary, explanation, or markdown — output ONLY a single valid JSON object.
+
+      Given a script, return an object with exactly three fields:
+
       {
-      "script": "[here is an example script] People will forget what you said... but people will never forget how you made them feel,"
-      "regExScript:" "
-
-      Your task here is to break a the script you made into a JSON array of strings based on these rules:
-
-      1. STRUCTURE: Elements must alternate between exactly TWO words and exactly ONE word.
-      2. EMPHASIS: Single-word elements must be the "anchor" words—verbs, nouns, or adjectives that carry the most meaning.
-      3. FLOW: Two-word elements should contain "functional" words (the, is, with, they).
-      4. FORMAT: Output ONLY a valid JSON array of strings.
-
-      Example:
-      Input: "The quick brown fox jumps over the lazy dog"
-      Output: ["The quick", "brown", "fox jumps", "over", "the lazy", "dog"]
-
-      based on our example script quote here is what the output would look like:
-      [
-      "People will",
-      "forget",
-      "what you",
-      "said...",
-      "but people",
-      "will never",
-      "forget",
-      "how you",
-      "made them",
-      "feel"
-      ]
-      "
+        "script": <the full original script as a single string>,
+        "wordGroups": <the script broken into a JSON array of strings, following the rules below>,
+        "clipDurationInFrames": <a JSON array of integers, one per element in wordGroups, representing how long each clip should last in frames>
       }
-      here is the description of the script i want you to write:
-      `,
+
+      ---
+
+      WORD GROUP RULES (for the "wordGroups" field):
+      Break the script into an array of strings using these strict rules:
+
+      1. ALTERNATING STRUCTURE: Elements must strictly alternate between TWO-word groups and ONE-word groups. Start with a two-word group.
+      2. EMPHASIS: Single-word elements must be the "anchor" word — the verb, noun, or adjective carrying the most meaning in that phrase.
+      3. FLOW: Two-word elements should contain functional/supporting words (e.g. the, is, with, they, what, how).
+      4. Do not skip or combine steps — every word in the script must appear in the array in order.
+
+      ---
+
+      CLIP DURATION RULES (for the "clipDurationInFrames" field):
+      - The array must be the same length as "wordGroups" — one integer per group.
+      - Single-word (emphasis) clips: typically 20–35 frames. Use more frames for emotionally heavy words.
+      - Two-word clips: typically 15–25 frames.
+      - Punctuation like "..." or "!" signals a pause — increase that clip's duration by ~10 frames.
+      - Use your judgment to make the pacing feel natural and dramatic.
+
+      ---
+
+      EXAMPLE:
+
+      Input script: "People will forget what you said... but people will never forget how you made them feel."
+
+      Expected output:
+      {
+        "script": "People will forget what you said... but people will never forget how you made them feel.",
+        "wordGroups": [
+          "People will",
+          "forget",
+          "what you",
+          "said...",
+          "but people",
+          "will never",
+          "forget",
+          "how you",
+          "made them",
+          "feel"
+        ],
+        "clipDurationInFrames": [18, 25, 18, 35, 18, 18, 30, 18, 18, 35]
+      }`,
     },
   });
   if (response.text) {
@@ -98,7 +117,3 @@ const { values } = parseArgs({
 });
 const message = values.m?.toString();
 if (message) generateScript(message);
-// systemInstruction: `this script will be fed into a voice transcription api in it's entirety.
-//   you will be asked to produce some sort of script; when you do ensure that
-//   script only contains text no comments nothing in parenthesis or anything of the sort`,
-// },

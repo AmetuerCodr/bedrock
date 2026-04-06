@@ -3,8 +3,9 @@ import { bundle } from "@remotion/bundler";
 import { renderMedia, selectComposition } from "@remotion/renderer";
 
 async function readFileData() {
-  const file = Bun.file("./src/lib/data.json");
+  const file = Bun.file("./public/data.json");
   const contents = await file.text();
+
   const cleanedContents = contents
     .replace(/^```json\s*/i, "")
     .replace(/```\s*$/i, "")
@@ -12,12 +13,12 @@ async function readFileData() {
   const json = JSON.parse(cleanedContents);
   console.log("json:", json);
   return json;
-  // hello
 }
 interface DataFileContent {
   script: string;
-  regExScript: string[];
+  wordGroups: string[];
 }
+
 async function main() {
   const content = await readFileData();
   console.log(typeof content);
@@ -27,7 +28,7 @@ async function main() {
   const composition = await selectComposition({
     serveUrl: bundled,
     id: "KineticTypography", // must match what's in Root.tsx
-    inputProps: { script: data.regExScript },
+    inputProps: { script: data.wordGroups },
   });
 
   await renderMedia({
@@ -35,7 +36,7 @@ async function main() {
     serveUrl: bundled,
     codec: "h264",
     outputLocation: "out/video.mp4",
-    inputProps: { script: data.regExScript },
+    inputProps: { script: data.wordGroups },
   });
 
   console.log("🎬 Rendered to out/video.mp4");

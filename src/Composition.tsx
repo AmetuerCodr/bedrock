@@ -8,10 +8,15 @@ import {
   random,
 } from "remotion";
 
-import { loadFont } from "@remotion/google-fonts/JetBrainsMono";
+import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
+import { loadFont as loadDMsans } from "@remotion/google-fonts/DMSans";
+const { fontFamily } = loadPoppins("normal", {
+  weights: ["400"],
+  subsets: ["latin"],
+});
 
-const { fontFamily } = loadFont("normal", {
-  weights: ["700"],
+const { displayFont } = loadDMsans("normal", {
+  weights: ["400"],
   subsets: ["latin"],
 });
 
@@ -27,7 +32,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
   const frame = useCurrentFrame();
   // FAST ease-out curve (snappy start, smooth finish)
   const easeOut = Easing.out(Easing.cubic);
-    
+
   const getFadeDirection = (direction: string): string => {
     switch (direction) {
       case "left":
@@ -65,7 +70,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     easing: easeOut,
     extrapolateRight: "clamp",
   });
-  
+
   const textStyle = {
     color: "#fff",
     fontSize: 100,
@@ -93,36 +98,46 @@ function randomFadeDirection(i: number) {
   return directions[mynum];
 }
 
-function myRegex(Text: string): string[] {
-  const regex = /\b[\w']+[^\s\w]*/g;
-  const splitString = Text?.match(regex) || [];
-  return splitString;
-}
+// function myRegex(Text: string): string[] {
+//   const regex = /\b[\w']+[^\s\w]*/g;
+//   const splitString = Text?.match(regex) || [];
+//   return splitString;
+// }
 
 // --- MAIN COMPOSITION WIRING ---
 export type VideoProps = {
   script: string[];
-}
-export const Video: React.FC<VideoProps> = ({script}) => {
+  clipDurationInFrames: number[];
+};
+export const Video: React.FC<VideoProps> = ({
+  script,
+  clipDurationInFrames,
+}) => {
   // const splitString = myRegex("This Video Was Made With Code isn't that cool?");
   const splitString = script || [];
+  const dur = clipDurationInFrames || [];
+
   useEffect(() => {
-    console.log(splitString);
+    console.log(dur);
   }, []);
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
-      {/* Scene 1 runs from frame 0 to 50 */}
-      {/*scene 4 my test scene*/}
-      {/*<FastEaseText fadeDirection="right" Text="My name is Shammah" />*/}
-      {splitString.map((item, i) => (
-        <Sequence  key={i} durationInFrames={50} from={15 * i}>
-          <FastEaseText
-            fadeDirection={randomFadeDirection(i)}
-            Text={item}
-          />
-        </Sequence>
-      ))}
+      {splitString.map((item, i) => {
+        const fromFrame = clipDurationInFrames
+          .slice(0, i)
+          .reduce((acc, d) => acc + d, 0);
+
+        return (
+          <Sequence
+            key={i}
+            durationInFrames={clipDurationInFrames[i]}
+            from={fromFrame}
+          >
+            <FastEaseText fadeDirection={randomFadeDirection(i)} Text={item} />
+          </Sequence>
+        );
+      })}
     </AbsoluteFill>
   );
 };
