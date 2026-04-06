@@ -9,16 +9,18 @@ import {
 } from "remotion";
 
 import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
-import { loadFont as loadPlayFair } from "@remotion/google-fonts/PlayfairDisplay";
+import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse";
 const { fontFamily: Poppins } = loadPoppins("normal", {
   weights: ["400"],
   subsets: ["latin"],
 });
 
-const { fontFamily: PlayFair } = loadPlayFair("normal", {
-  weights: ["700"],
+const { fontFamily: Boldonse } = loadBoldonse("normal", {
+  weights: ["400"],
   subsets: ["latin"],
 });
+
+// todo()! make the styling of text dynamic based on llm output
 
 type MyCompProps = {
   fadeDirection: string;
@@ -93,7 +95,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     color: "#dc2626",
     fontSize: 100,
     margin: 0,
-    fontFamily: PlayFair,
+    fontFamily: Boldonse,
     transform: `${getFadeDirection(fadeDirection)}`,
     opacity,
   };
