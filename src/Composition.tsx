@@ -9,14 +9,14 @@ import {
 } from "remotion";
 
 import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
-import { loadFont as loadDMsans } from "@remotion/google-fonts/DMSans";
-const { fontFamily } = loadPoppins("normal", {
+import { loadFont as loadPlayFair } from "@remotion/google-fonts/PlayfairDisplay";
+const { fontFamily: Poppins } = loadPoppins("normal", {
   weights: ["400"],
   subsets: ["latin"],
 });
 
-const { displayFont } = loadDMsans("normal", {
-  weights: ["400"],
+const { fontFamily: PlayFair } = loadPlayFair("normal", {
+  weights: ["700"],
   subsets: ["latin"],
 });
 
@@ -71,11 +71,29 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     extrapolateRight: "clamp",
   });
 
-  const textStyle = {
+  interface TextStyle {
+    color: string;
+    fontSize: number;
+    margin?: number;
+    fontFamily: string;
+    transform?: string;
+    opacity?: number;
+  }
+
+  const textStyle: TextStyle = {
     color: "#fff",
     fontSize: 100,
     margin: 0,
-    fontFamily: fontFamily,
+    fontFamily: Poppins,
+    transform: `${getFadeDirection(fadeDirection)}`,
+    opacity,
+  };
+
+  const textStyleBold: TextStyle = {
+    color: "#dc2626",
+    fontSize: 100,
+    margin: 0,
+    fontFamily: PlayFair,
     transform: `${getFadeDirection(fadeDirection)}`,
     opacity,
   };
@@ -87,7 +105,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
         backgroundColor: "#000",
       }}
     >
-      <h1 style={textStyle}>{Text}</h1>
+      <h1 style={{ ...textStyleBold, textTransform: "uppercase" }}>{Text}</h1>
     </AbsoluteFill>
   );
 };
