@@ -27,6 +27,7 @@ export const RemotionRoot: React.FC = () => {
         props: {
           script: data.wordGroups,
           clipDurationInFrames: data.clipDurationInFrames,
+          displayFontArray: data.isDisplayFont
         },
         durationInFrames: addedFrames,
       };
@@ -42,6 +43,7 @@ export const RemotionRoot: React.FC = () => {
         id="KineticTypography"
         component={Video}
         defaultProps={{
+          displayFontArray: [false, false, false],
           script: ["Preview", "text", "here"],
           clipDurationInFrames: [15, 15, 15],
         }}

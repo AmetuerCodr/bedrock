@@ -1,27 +1,27 @@
 {
-  "script": "Dispatch is a chilling VR game. You are a police dispatcher. Taking calls from victims. Soon, reality starts to blur. Can you discern what's true? Or will terror consume you?",
+  "script": "Believe in yourself. You have power. Achieve your dreams!",
   "wordGroups": [
-    "Dispatch is",
-    "chilling",
-    "VR game.",
-    "You are",
-    "a police",
-    "dispatcher.",
-    "Taking calls",
-    "from victims.",
-    "Soon, reality",
-    "starts to",
-    "blur.",
-    "Can you",
-    "discern",
-    "what's true?",
-    "Or will",
-    "terror",
-    "consume you?"
+    "Believe in",
+    "yourself.",
+    "You have",
+    "power.",
+    "Achieve your",
+    "dreams!"
   ],
   "clipDurationInFrames": [
-    18, 30, 20, 18, 18, 30, 20, 22, 22, 18, 32, 18, 28, 25, 18, 35, 25
+    18,
+    40,
+    18,
+    40,
+    18,
+    45
+  ],
+  "isDisplayFont": [
+    false,
+    true,
+    false,
+    true,
+    false,
+    true
   ]
-  
-
 }

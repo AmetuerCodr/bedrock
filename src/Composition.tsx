@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import {
   AbsoluteFill,
   interpolate,
@@ -10,6 +9,7 @@ import {
 
 import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
 import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse";
+import { useEffect } from "react";
 const { fontFamily: Poppins } = loadPoppins("normal", {
   weights: ["400"],
   subsets: ["latin"],
@@ -25,11 +25,13 @@ const { fontFamily: Boldonse } = loadBoldonse("normal", {
 type MyCompProps = {
   fadeDirection: string;
   Text: string;
+  styleBool: boolean;
 };
 
 export const FastEaseText: React.FC<MyCompProps> = ({
   fadeDirection,
   Text,
+  styleBool,
 }) => {
   const frame = useCurrentFrame();
   // FAST ease-out curve (snappy start, smooth finish)
@@ -79,10 +81,11 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     margin?: number;
     fontFamily: string;
     transform?: string;
+    textTransform?: string;
     opacity?: number;
   }
 
-  const textStyle: TextStyle = {
+  const textStyleDefault: TextStyle = {
     color: "#fff",
     fontSize: 100,
     margin: 0,
@@ -91,10 +94,11 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     opacity,
   };
 
-  const textStyleBold: TextStyle = {
+  const textStyleDisplay: TextStyle = {
     color: "#dc2626",
     fontSize: 100,
     margin: 0,
+    textTransform: "uppercase",
     fontFamily: Boldonse,
     transform: `${getFadeDirection(fadeDirection)}`,
     opacity,
@@ -107,7 +111,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
         backgroundColor: "#000",
       }}
     >
-      <h1 style={{ ...textStyleBold, textTransform: "uppercase" }}>{Text}</h1>
+      <h1 style={styleBool ? textStyleDisplay : textStyleDefault}>{Text}</h1>
     </AbsoluteFill>
   );
 };
@@ -127,19 +131,20 @@ function randomFadeDirection(i: number) {
 // --- MAIN COMPOSITION WIRING ---
 export type VideoProps = {
   script: string[];
+  displayFontArray: boolean[];
   clipDurationInFrames: number[];
 };
 export const Video: React.FC<VideoProps> = ({
   script,
+  displayFontArray,
   clipDurationInFrames,
 }) => {
   // const splitString = myRegex("This Video Was Made With Code isn't that cool?");
   const splitString = script || [];
   const dur = clipDurationInFrames || [];
+  const fontArray = displayFontArray || [];
 
-  useEffect(() => {
-    console.log(dur);
-  }, []);
+  // useEffect(() => console.log(fontArray), []);
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
@@ -148,13 +153,19 @@ export const Video: React.FC<VideoProps> = ({
           .slice(0, i)
           .reduce((acc, d) => acc + d, 0);
 
+        const myStyleBool = fontArray[i];
+
         return (
           <Sequence
             key={i}
             durationInFrames={clipDurationInFrames[i]}
             from={fromFrame}
           >
-            <FastEaseText fadeDirection={randomFadeDirection(i)} Text={item} />
+            <FastEaseText
+              styleBool={myStyleBool}
+              fadeDirection={randomFadeDirection(i)}
+              Text={item}
+            />
           </Sequence>
         );
       })}

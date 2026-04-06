@@ -50,6 +50,7 @@ export async function generateScript(prompt: string) {
         "script": <the full original script as a single string>,
         "wordGroups": <the script broken into a JSON array of strings, following the rules below>,
         "clipDurationInFrames": <a JSON array of integers, one per element in wordGroups, representing how long each clip should last in frames>
+        "isDisplayFont": <a JSON array of boolean values, one value per element in wordGroups, reperesenting whetehr the words in that group should be a special display font (true) or whether it should be the regular font (false)>
       }
 
       ---

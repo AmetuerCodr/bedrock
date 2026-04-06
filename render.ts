@@ -17,6 +17,7 @@ async function readFileData() {
 interface DataFileContent {
   script: string;
   wordGroups: string[];
+  isDisplayFont: boolean[];
 }
 
 async function main() {
@@ -28,7 +29,7 @@ async function main() {
   const composition = await selectComposition({
     serveUrl: bundled,
     id: "KineticTypography", // must match what's in Root.tsx
-    inputProps: { script: data.wordGroups },
+    inputProps: { script: data.wordGroups, displayFontArray: data.isDisplayFont },
   });
 
   await renderMedia({
