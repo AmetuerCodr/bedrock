@@ -8,8 +8,8 @@ import {
 } from "remotion";
 
 import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
-import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse";
-import { useEffect } from "react";
+import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse"
+
 const { fontFamily: Poppins } = loadPoppins("normal", {
   weights: ["400"],
   subsets: ["latin"],
@@ -139,7 +139,6 @@ export const Video: React.FC<VideoProps> = ({
   displayFontArray,
   clipDurationInFrames,
 }) => {
-  // const splitString = myRegex("This Video Was Made With Code isn't that cool?");
   const splitString = script || [];
   const dur = clipDurationInFrames || [];
   const fontArray = displayFontArray || [];

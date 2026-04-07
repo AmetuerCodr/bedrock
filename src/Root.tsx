@@ -3,16 +3,6 @@ import { CalculateMetadataFunction, Composition, staticFile } from "remotion";
 
 import { Video, VideoProps } from "./Composition";
 export const RemotionRoot: React.FC = () => {
-  // calculateMetadata={async () => {
-  //   // ← goes right here
-  //   const res = await staticFile('data.json');
-  //   const data = await res.json();
-  //   return {
-  //     props: { script: data.regExScript },
-  //     durationInFrames: data.regExScript.length * 15,
-  //   };
-  // }}'
-
   const func: CalculateMetadataFunction<VideoProps> = async () => {
     try {
       const res = await fetch(staticFile("data.json"));
@@ -40,7 +30,7 @@ export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="KineticTypography"
+        id="BedrockVideo"
         component={Video}
         defaultProps={{
           displayFontArray: [false, false, false],
