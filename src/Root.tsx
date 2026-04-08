@@ -17,7 +17,8 @@ export const RemotionRoot: React.FC = () => {
         props: {
           script: data.wordGroups,
           clipDurationInFrames: data.clipDurationInFrames,
-          displayFontArray: data.isDisplayFont
+          displayFontArray: data.isDisplayFont,
+          defaultTextVariant: data.defaultTextVariant,
         },
         durationInFrames: addedFrames,
       };
@@ -35,6 +36,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           displayFontArray: [false, false, false],
           script: ["Preview", "text", "here"],
+          defaultTextVariant: ["up", "down", "left"],
           clipDurationInFrames: [15, 15, 15],
         }}
         durationInFrames={450}

@@ -8,7 +8,7 @@ import {
 } from "remotion";
 
 import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
-import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse"
+import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse";
 
 const { fontFamily: Poppins } = loadPoppins("normal", {
   weights: ["400"],
@@ -21,7 +21,7 @@ const { fontFamily: Boldonse } = loadBoldonse("normal", {
 });
 
 // todo()! make the styling of text dynamic based on llm output
-
+//
 type MyCompProps = {
   fadeDirection: string;
   Text: string;
@@ -90,19 +90,30 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     fontSize: 100,
     margin: 0,
     fontFamily: Poppins,
-    transform: `${getFadeDirection(fadeDirection)}`,
     opacity,
   };
 
   const textStyleDisplay: TextStyle = {
-    color: "#dc2626",
+    color: "#2563eb",
     fontSize: 100,
     margin: 0,
     textTransform: "uppercase",
     fontFamily: Boldonse,
-    transform: `${getFadeDirection(fadeDirection)}`,
     opacity,
   };
+
+  let style: object = {};
+
+  if (styleBool) {
+    textStyleDisplay.transform = `${getFadeDirection(fadeDirection)}`;
+    style = textStyleDisplay;
+  } else {
+    textStyleDefault.transform = `${getFadeDirection(fadeDirection)}`;
+    style = textStyleDefault;
+  }
+
+  // transform: `${getFadeDirection(fadeDirection)}`,
+
   return (
     <AbsoluteFill
       style={{
@@ -111,37 +122,29 @@ export const FastEaseText: React.FC<MyCompProps> = ({
         backgroundColor: "#000",
       }}
     >
-      <h1 style={styleBool ? textStyleDisplay : textStyleDefault}>{Text}</h1>
+      <h1 style={style}>{Text}</h1>
     </AbsoluteFill>
   );
 };
-
-function randomFadeDirection(i: number) {
-  const mynum = Math.floor(random(i) * 4);
-  const directions = ["top", "bottom", "left", "right"];
-  return directions[mynum];
-}
-
-// function myRegex(Text: string): string[] {
-//   const regex = /\b[\w']+[^\s\w]*/g;
-//   const splitString = Text?.match(regex) || [];
-//   return splitString;
-// }
 
 // --- MAIN COMPOSITION WIRING ---
 export type VideoProps = {
   script: string[];
   displayFontArray: boolean[];
   clipDurationInFrames: number[];
+  defaultTextVariant: string[];
 };
 export const Video: React.FC<VideoProps> = ({
   script,
   displayFontArray,
   clipDurationInFrames,
+  defaultTextVariant,
 }) => {
   const splitString = script || [];
   const dur = clipDurationInFrames || [];
   const fontArray = displayFontArray || [];
+
+  const animationVariants: string[] = defaultTextVariant || [];
 
   // useEffect(() => console.log(fontArray), []);
 
@@ -162,7 +165,7 @@ export const Video: React.FC<VideoProps> = ({
           >
             <FastEaseText
               styleBool={myStyleBool}
-              fadeDirection={randomFadeDirection(i)}
+              fadeDirection={animationVariants[i]}
               Text={item}
             />
           </Sequence>

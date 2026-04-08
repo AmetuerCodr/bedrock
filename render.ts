@@ -18,6 +18,8 @@ interface DataFileContent {
   script: string;
   wordGroups: string[];
   isDisplayFont: boolean[];
+  defaultTextFadeIn: boolean;
+  defaultTextVariant: string[];
 }
 
 async function main() {
