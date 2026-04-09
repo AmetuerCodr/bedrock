@@ -19,6 +19,7 @@ export const RemotionRoot: React.FC = () => {
           clipDurationInFrames: data.clipDurationInFrames,
           displayFontArray: data.isDisplayFont,
           defaultTextVariant: data.defaultTextVariant,
+          fadeInTransitionBool: data.fadeInTransitionBool,
         },
         durationInFrames: addedFrames,
       };

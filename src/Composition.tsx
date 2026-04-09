@@ -26,15 +26,17 @@ type MyCompProps = {
   fadeDirection: string;
   Text: string;
   styleBool: boolean;
+  extraStyles: object;
 };
 
 export const FastEaseText: React.FC<MyCompProps> = ({
   fadeDirection,
   Text,
   styleBool,
+  extraStyles,
 }) => {
   const frame = useCurrentFrame();
-  // FAST ease-out curve (snappy start, smooth finish)
+
   const easeOut = Easing.out(Easing.cubic);
 
   const getFadeDirection = (direction: string): string => {
@@ -48,7 +50,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
       case "bottom":
         return `translateY(${fade.bottom}px)`;
       default:
-        return `translateX(${fade.left}px)`;
+        return ``;
     }
   };
 
@@ -122,7 +124,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
         backgroundColor: "#000",
       }}
     >
-      <h1 style={style}>{Text}</h1>
+      <h1 style={{ ...style, ...extraStyles }}>{Text}</h1>
     </AbsoluteFill>
   );
 };
@@ -133,18 +135,37 @@ export type VideoProps = {
   displayFontArray: boolean[];
   clipDurationInFrames: number[];
   defaultTextVariant: string[];
+  fadeInTransitionBool: boolean[];
 };
 export const Video: React.FC<VideoProps> = ({
   script,
   displayFontArray,
   clipDurationInFrames,
   defaultTextVariant,
+  fadeInTransitionBool,
 }) => {
   const splitString = script || [];
   const dur = clipDurationInFrames || [];
   const fontArray = displayFontArray || [];
-
+  const fadeInBool = fadeInTransitionBool || [];
   const animationVariants: string[] = defaultTextVariant || [];
+
+  function opacityStyle(bool: boolean): object {
+    let style = {};
+    if (!bool) {
+      style = { ...style, opacity: opacity };
+      return style;
+    } else {
+      return {};
+    }
+  }
+
+  const frame = useCurrentFrame();
+  const easeOut = Easing.out(Easing.cubic);
+  const opacity = interpolate(frame, [0, 15], [0, 1], {
+    easing: easeOut,
+    extrapolateRight: "clamp",
+  });
 
   // useEffect(() => console.log(fontArray), []);
 
@@ -154,7 +175,6 @@ export const Video: React.FC<VideoProps> = ({
         const fromFrame = clipDurationInFrames
           .slice(0, i)
           .reduce((acc, d) => acc + d, 0);
-
         const myStyleBool = fontArray[i];
 
         return (
@@ -165,7 +185,8 @@ export const Video: React.FC<VideoProps> = ({
           >
             <FastEaseText
               styleBool={myStyleBool}
-              fadeDirection={animationVariants[i]}
+              extraStyles={opacityStyle(fadeInBool[i])}
+              fadeDirection={fadeInBool[i] ? animationVariants[i] : "none"}
               Text={item}
             />
           </Sequence>

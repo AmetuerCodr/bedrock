@@ -50,8 +50,9 @@ export async function generateScript(prompt: string) {
         "script": <the full original script as a single string>,
         "wordGroups": <the script broken into a JSON array of strings, following the rules below>,
         "clipDurationInFrames": <a JSON array of integers, one per element in wordGroups, representing how long each clip should last in frames>
-        "isDisplayFont": <a JSON array of boolean values, one value per element in wordGroups, reperesenting whetehr the words in that group should be a special display font (true) or whether it should be the regular font (false)>
-        "defaultTextVariant" <if the defaultTextFadeIn boolean is set to true this will be utilized. a JSON array of strings, one per element in wordGroups, representing which variant of the "defaultTextFadeIn" should be used. there are only 4 variants: "top", "bottom", "left", and "right" use them as you see fit to create an aesthetic. they should not just be used randomly>
+        "isDisplayFont": <a JSON array of boolean values, one value per element in wordGroups, reperesenting wheteher the words in that group should be a special display font (true) or whether it should be the regular font (false)>
+        "defaultTextVariant" <a JSON array of strings, one per element in wordGroups, representing which variant of the "defaultTextFadeIn" should be used. there are only 4 variants: "top", "bottom", "left", and "right" use them as you see fit to create an aesthetic. they should not just be used randomly>
+        "fadeInTransitionBool": <a JSON array of boolean values, one value per element in wordGroups, representing whether the words in that group should have a fade transition (true) or whether it will just be a hard cut (false) switch between true and false as if you were a video editor>
       }
 
       ---
