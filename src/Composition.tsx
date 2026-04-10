@@ -114,7 +114,6 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     style = textStyleDefault;
   }
 
-  // transform: `${getFadeDirection(fadeDirection)}`,
 
   return (
     <AbsoluteFill
@@ -145,7 +144,6 @@ export const Video: React.FC<VideoProps> = ({
   fadeInTransitionBool,
 }) => {
   const splitString = script || [];
-  const dur = clipDurationInFrames || [];
   const fontArray = displayFontArray || [];
   const fadeInBool = fadeInTransitionBool || [];
   const animationVariants: string[] = defaultTextVariant || [];
