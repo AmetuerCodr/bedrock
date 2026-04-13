@@ -20,6 +20,8 @@ export const RemotionRoot: React.FC = () => {
           displayFontArray: data.isDisplayFont,
           defaultTextVariant: data.defaultTextVariant,
           fadeInTransitionBool: data.fadeInTransitionBool,
+          bodyFont: data.bodyFont,
+          displayFont: data.displayFont
         },
         durationInFrames: addedFrames,
       };
@@ -28,6 +30,8 @@ export const RemotionRoot: React.FC = () => {
       throw err;
     }
   };
+  
+  
 
   return (
     <>
@@ -35,6 +39,9 @@ export const RemotionRoot: React.FC = () => {
         id="BedrockVideo"
         component={Video}
         defaultProps={{
+          bodyFont: "Inter",
+          displayFont: "Montserrat",
+          fadeInTransitionBool: [true, true, false],
           displayFontArray: [false, false, false],
           script: ["Preview", "text", "here"],
           defaultTextVariant: ["up", "down", "left"],

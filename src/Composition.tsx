@@ -4,11 +4,12 @@ import {
   Sequence,
   useCurrentFrame,
   Easing,
-  random,
 } from "remotion";
 
 import { loadFont as loadPoppins } from "@remotion/google-fonts/Poppins";
 import { loadFont as loadBoldonse } from "@remotion/google-fonts/Boldonse";
+import { getAvailableFonts } from "@remotion/google-fonts";
+import { useEffect } from "react";
 
 const { fontFamily: Poppins } = loadPoppins("normal", {
   weights: ["400"],
@@ -27,6 +28,8 @@ type MyCompProps = {
   Text: string;
   styleBool: boolean;
   extraStyles: object;
+  bodyFont: string;
+  displayFont: string;
 };
 
 export const FastEaseText: React.FC<MyCompProps> = ({
@@ -34,6 +37,8 @@ export const FastEaseText: React.FC<MyCompProps> = ({
   Text,
   styleBool,
   extraStyles,
+  bodyFont,
+  displayFont,
 }) => {
   const frame = useCurrentFrame();
 
@@ -81,7 +86,7 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     color: string;
     fontSize: number;
     margin?: number;
-    fontFamily: string;
+    fontFamily?: string;
     transform?: string;
     textTransform?: string;
     opacity?: number;
@@ -91,7 +96,6 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     color: "#fff",
     fontSize: 100,
     margin: 0,
-    fontFamily: Poppins,
     opacity,
   };
 
@@ -100,7 +104,6 @@ export const FastEaseText: React.FC<MyCompProps> = ({
     fontSize: 100,
     margin: 0,
     textTransform: "uppercase",
-    fontFamily: Boldonse,
     opacity,
   };
 
@@ -108,12 +111,13 @@ export const FastEaseText: React.FC<MyCompProps> = ({
 
   if (styleBool) {
     textStyleDisplay.transform = `${getFadeDirection(fadeDirection)}`;
+    textStyleDefault.fontFamily = displayFont;
     style = textStyleDisplay;
   } else {
     textStyleDefault.transform = `${getFadeDirection(fadeDirection)}`;
+    textStyleDefault.transform = bodyFont;
     style = textStyleDefault;
   }
-
 
   return (
     <AbsoluteFill
@@ -135,6 +139,8 @@ export type VideoProps = {
   clipDurationInFrames: number[];
   defaultTextVariant: string[];
   fadeInTransitionBool: boolean[];
+  bodyFont: string;
+  displayFont: string;
 };
 export const Video: React.FC<VideoProps> = ({
   script,
@@ -142,7 +148,11 @@ export const Video: React.FC<VideoProps> = ({
   clipDurationInFrames,
   defaultTextVariant,
   fadeInTransitionBool,
+  bodyFont,
+  displayFont,
 }) => {
+  displayFont = displayFont || "";
+  bodyFont = bodyFont || "";
   const splitString = script || [];
   const fontArray = displayFontArray || [];
   const fadeInBool = fadeInTransitionBool || [];
@@ -165,7 +175,18 @@ export const Video: React.FC<VideoProps> = ({
     extrapolateRight: "clamp",
   });
 
-  // useEffect(() => console.log(fontArray), []);
+  async function importFonts(fontName: string) {
+    const availableFonts = getAvailableFonts();
+    const font = availableFonts.find((f) => f.importName === fontName);
+
+    if (!font) throw new Error(`Font ${fontName} not found`);
+
+    const loaded = await font.load();
+    loaded.loadFont("normal", {
+      weights: ["400"],
+      subsets: ["latin"],
+    });
+  }
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
@@ -182,6 +203,8 @@ export const Video: React.FC<VideoProps> = ({
             from={fromFrame}
           >
             <FastEaseText
+              bodyFont={searchForFont("Inter")}
+              displayFont={searchForFont("playfairdisplay")}
               styleBool={myStyleBool}
               extraStyles={opacityStyle(fadeInBool[i])}
               fadeDirection={fadeInBool[i] ? animationVariants[i] : "none"}
