@@ -28,31 +28,8 @@
     "anything."
   ],
   "clipDurationInFrames": [
-    18,
-    30,
-    18,
-    15,
-    30,
-    18,
-    30,
-    20,
-    32,
-    25,
-    20,
-    35,
-    15,
-    30,
-    25,
-    35,
-    18,
-    35,
-    20,
-    35,
-    20,
-    20,
-    22,
-    35,
-    40
+    18, 30, 18, 15, 30, 18, 30, 20, 32, 25, 20, 35, 15, 30, 25, 35, 18, 35, 20,
+    35, 20, 20, 22, 35, 40
   ],
   "DisplayFontBoolArray": [
     true,
@@ -135,6 +112,6 @@
     false,
     true
   ],
-  "bodyFont": "Inter",
-  "displayFont": "PlayfairDisplay"
+  "bodyFont": "inter",
+  "displayFont": "playfairdisplay"
 }

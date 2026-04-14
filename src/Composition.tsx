@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 // Dynamic font loader — now actually wired up
 async function loadFont(importName: string): Promise<string> {
   const available = getAvailableFonts();
-  const font = available.find((f) => f.importName === importName);
+  const font = available.find((f) => f.importName.toLowerCase() === importName.toLowerCase());
   if (!font) throw new Error(`Font not found: ${importName}`);
   const loaded = await font.load();
   const { fontFamily } = loaded.loadFont("normal", {
