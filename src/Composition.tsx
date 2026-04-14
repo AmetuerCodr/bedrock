@@ -7,14 +7,16 @@ import {
 } from "remotion";
 import { getAvailableFonts } from "@remotion/google-fonts";
 import React from "react";
+import { useState, useEffect } from "react";
 import { VideoData } from "./lib/schema.ts";
 
-import { useState, useEffect } from "react";
 
-// Dynamic font loader — now actually wired up
+// Dynamic font loader 
 async function loadFont(importName: string): Promise<string> {
   const available = getAvailableFonts();
-  const font = available.find((f) => f.importName.toLowerCase() === importName.toLowerCase());
+  const font = available.find(
+    (f) => f.importName.toLowerCase() === importName.toLowerCase(),
+  );
   if (!font) throw new Error(`Font not found: ${importName}`);
   const loaded = await font.load();
   const { fontFamily } = loaded.loadFont("normal", {
@@ -79,11 +81,12 @@ const Clip: React.FC<ClipProps> = ({
     >
       <h1
         style={{
-          color: isDisplay ? "#2563eb" : "#fff",
+          color: isDisplay ? "#f59e0b" : "#fff",
           fontSize: 100,
           margin: 0,
           fontFamily,
-          textTransform: isDisplay ? "uppercase" : undefined,
+          textTransform: isDisplay ? "capitalize" : undefined,
+          fontWeight: isDisplay ? 700 : 100,
           transform: hasFade ? translate : undefined,
           opacity: hasFade ? opacity : 1,
         }}

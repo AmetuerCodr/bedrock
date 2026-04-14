@@ -10,7 +10,7 @@ export async function generateScript(prompt: string) {
   const ai = new GoogleGenAI({ apiKey: Bun.env.GEMINI_API_KEY });
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3-flash-preview",
     contents: prompt,
     config: {
       systemInstruction: `You are a JSON generator for a motion graphics application.
@@ -110,6 +110,7 @@ FIELD DEFINITIONS & RULES
    - Should provide clear visual contrast to the bodyFont (e.g., if bodyFont is a clean sans-serif, consider a bold serif, slab, or expressive display face).
    - Must be a real, currently available Google Font.
    - Used for all clips where isDisplayFont is true.
+
 
 ---
 `,
