@@ -1,58 +1,40 @@
 import "./index.css";
 import { CalculateMetadataFunction, Composition, staticFile } from "remotion";
+import { Video } from "./Composition";
+import { VideoSchema, VideoData } from "./lib/schema";
 
-import { Video, VideoProps } from "./Composition";
 export const RemotionRoot: React.FC = () => {
-  const func: CalculateMetadataFunction<VideoProps> = async () => {
-    try {
-      const res = await fetch(staticFile("data.json"));
-      if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-      const data = await res.json();
-      const addedFrames = data.clipDurationInFrames.reduce(
-        (acc: number, d: number) => acc + d,
-        0,
-      ); // combines duration of all frames
-      console.log("data:", data);
-      return {
-        props: {
-          script: data.wordGroups,
-          clipDurationInFrames: data.clipDurationInFrames,
-          displayFontArray: data.isDisplayFont,
-          defaultTextVariant: data.defaultTextVariant,
-          fadeInTransitionBool: data.fadeInTransitionBool,
-          bodyFont: data.bodyFont,
-          displayFont: data.displayFont
-        },
-        durationInFrames: addedFrames,
-      };
-    } catch (err) {
-      console.error("calculateMetadata error:", err);
-      throw err;
-    }
+  const func: CalculateMetadataFunction<VideoData> = async () => {
+    const res = await fetch(staticFile("data.json"));
+    if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+
+    const data = VideoSchema.parse(await res.json()); // validates shape here
+
+    return {
+      props: data, // no manual remapping — field names already match
+      durationInFrames: data.clipDurationInFrames.reduce((a, b) => a + b, 0),
+    };
   };
-  
-  
 
   return (
-    <>
-      <Composition
-        id="BedrockVideo"
-        component={Video}
-        defaultProps={{
-          bodyFont: "Inter",
-          displayFont: "Montserrat",
-          fadeInTransitionBool: [true, true, false],
-          displayFontArray: [false, false, false],
-          script: ["Preview", "text", "here"],
-          defaultTextVariant: ["up", "down", "left"],
-          clipDurationInFrames: [15, 15, 15],
-        }}
-        durationInFrames={450}
-        calculateMetadata={func}
-        fps={30}
-        width={1080}
-        height={1080}
-      />
-    </>
+    <Composition
+      id="BedrockVideo"
+      component={Video}
+      calculateMetadata={func}
+      defaultProps={{
+        script: "",
+        wordGroups: ["Preview", "text", "here"],
+        clipDurationInFrames: [15, 15, 15],
+        DisplayFontBoolArray: [false, false, false],
+        defaultTextVariant: ["left", "right", "bottom"],
+        fadeInTransitionBool: [true, true, true],
+        bodyFont: "inter",
+        displayFont: "montserrat",
+      }}
+      durationInFrames={45}
+      fps={30}
+      width={1080}
+      height={1080}
+    />
   );
 };

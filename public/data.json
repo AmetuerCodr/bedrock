@@ -54,7 +54,7 @@
     35,
     40
   ],
-  "isDisplayFont": [
+  "DisplayFontBoolArray": [
     true,
     true,
     false,
@@ -135,6 +135,6 @@
     false,
     true
   ],
-  "bodyFont": "inter",
-  "displayFont": "playfairDisplay"
+  "bodyFont": "Inter",
+  "displayFont": "PlayfairDisplay"
 }
