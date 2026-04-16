@@ -26,21 +26,23 @@ async function loadFont(importName: string): Promise<string> {
   return fontFamily;
 }
 
-// --- Clip component ---
-type ClipProps = {
+// 1. Update your interface/types for the new props
+interface ClipProps {
   text: string;
-  isDisplay: boolean;
+  fontBools: boolean[]; // Replaces isDisplay
   fadeDir: string;
   hasFade: boolean;
-  fontFamily: string;
-};
+  displayFamily: string; // The bold font
+  bodyFamily: string;    // The clean font
+}
 
-const Clip: React.FC<ClipProps> = ({
+export const Clip: React.FC<ClipProps> = ({
   text,
-  isDisplay,
+  fontBools,
   fadeDir,
   hasFade,
-  fontFamily,
+  displayFamily,
+  bodyFamily,
 }) => {
   const frame = useCurrentFrame();
   const easeOut = Easing.out(Easing.cubic);
@@ -52,13 +54,13 @@ const Clip: React.FC<ClipProps> = ({
       fadeDir === "left"
         ? -300
         : fadeDir === "right"
-          ? 300
-          : fadeDir === "top"
-            ? -300
-            : 300,
+        ? 300
+        : fadeDir === "top"
+        ? -300
+        : 300,
       0,
     ],
-    { easing: easeOut, extrapolateRight: "clamp" },
+    { easing: easeOut, extrapolateRight: "clamp" }
   );
 
   const opacity = interpolate(frame, [0, 15], [0, 1], {
@@ -71,6 +73,9 @@ const Clip: React.FC<ClipProps> = ({
       ? `translateX(${offset}px)`
       : `translateY(${offset}px)`;
 
+  // Split the chunk of text into an array of words
+  const words = text.split(" ");
+
   return (
     <AbsoluteFill
       style={{
@@ -79,20 +84,40 @@ const Clip: React.FC<ClipProps> = ({
         backgroundColor: "#000",
       }}
     >
-      <h1
+      {/* The Wrapper handles the animation and layout so the words move together */}
+      <div
         style={{
-          color: isDisplay ? "#f59e0b" : "#fff",
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "25px", // Acts as your "space" between words. Adjust as needed!
           fontSize: 100,
           margin: 0,
-          fontFamily,
-          textTransform: isDisplay ? "capitalize" : undefined,
-          fontWeight: isDisplay ? 700 : 100,
           transform: hasFade ? translate : undefined,
           opacity: hasFade ? opacity : 1,
         }}
       >
-        {text}
-      </h1>
+        {/* Map over the words and style them individually based on the fontBools array */}
+        {words.map((word, index) => {
+          // Safety check in case the LLM messes up the array length
+          const isDisplay = fontBools[index] ?? false;
+
+          return (
+            <span
+              key={index}
+              style={{
+                color: isDisplay ? "#f59e0b" : "#fff",
+                fontFamily: isDisplay ? displayFamily : bodyFamily,
+                textTransform: isDisplay ? "capitalize" : undefined,
+                fontWeight: isDisplay ? 700 : 100,
+              }}
+            >
+              {word}
+            </span>
+          );
+        })}
+      </div>
     </AbsoluteFill>
   );
 };
@@ -122,7 +147,7 @@ export const Video: React.FC<VideoData> = ({
       {wordGroups.map((text, i) => {
         const start = fromFrame;
         fromFrame += clipDurationInFrames[i];
-
+    
         return (
           <Sequence
             key={i}
@@ -131,10 +156,13 @@ export const Video: React.FC<VideoData> = ({
           >
             <Clip
               text={text}
-              isDisplay={DisplayFontBoolArray[i]}
+              // Pass the sub-array of booleans for this specific word group
+              fontBools={DisplayFontBoolArray[i]} 
               fadeDir={defaultTextVariant[i]}
               hasFade={fadeInTransitionBool[i]}
-              fontFamily={DisplayFontBoolArray[i] ? displayFamily : bodyFamily}
+              // Pass BOTH fonts so the Clip component can alternate them
+              displayFamily={displayFamily}
+              bodyFamily={bodyFamily}
             />
           </Sequence>
         );

@@ -30,19 +30,13 @@ FIELD DEFINITIONS & RULES
 2. "wordGroups" (string[])
    The script broken into an ordered array of short text clips following these strict rules:
 
-   ALTERNATING STRUCTURE
-   - Elements MUST strictly alternate: TWO-word group → ONE-word group → TWO-word group → ONE-word group...
-   - Always begin with a TWO-word group.
-   - Every word from the script must appear exactly once, in order.
-   - If the script ends mid-pattern (e.g., only one word remains when a two-word group is expected), place that single word alone as the final element — the alternating rule bends only at the very end.
-
-   EMPHASIS (one-word groups)
-   - The single word must be the "anchor" — the verb, noun, or adjective carrying the most semantic weight in its surrounding phrase.
-   - Avoid using filler words (a, the, is, of, in, to) as solo elements.
-
-   FLOW (two-word groups)
-   - Should contain functional or supporting words that bridge meaning (e.g., "what you", "they will", "but we").
-   - Punctuation stays attached to the word it follows (e.g., "said..." or "feel.").
+   DYNAMIC RHYTHMIC CHUNKING
+   - Group words naturally as they would be spoken, allowing 1, 2, 3, or 4 words per group.
+   - MAX 4 WORDS per group. Never exceed this limit to ensure text fits on screen.
+   - ISOLATE FOR EMPHASIS (1-word groups): Place high-impact anchor words (verbs, nouns, adjectives, punchlines) in their own 1-word group.
+   - GROUP FOR FLOW (2 to 4-word groups): Cluster filler, bridge, or connective words together so they read smoothly (e.g., "what if we went", "going to the", "but they will").
+   - Every word from the script must appear exactly once, in sequential order.
+   - STRIP ALL PUNCTUATION: Remove all periods, commas, question marks, exclamation points, colons, semicolons, apostrophes, quotation marks, parentheses, brackets, braces, and ellipses from the wordGroups. Output purely alphanumeric text (and spaces).
 
 ---
 
@@ -50,25 +44,30 @@ FIELD DEFINITIONS & RULES
    An array of integers — one per wordGroup — representing how many frames that clip is displayed. Assume 30fps.
 
    DURATION GUIDELINES
-   - Two-word groups: 15–25 frames (avg ~18).
-   - One-word (emphasis) groups: 20–35 frames (avg ~27).
+   - 3 to 4-word groups: 25–40 frames.
+   - 2-word groups: 15–25 frames.
+   - 1-word (emphasis) groups: 20–35 frames.
    - Emotionally heavy or climactic words: push toward 35+ frames.
-   - Clips ending with "..." or "—": add ~10 extra frames for a dramatic pause.
-   - Clips ending with "!" or "?": add ~5 extra frames.
+
+   PUNCTUATION PAUSES (CRITICAL RULE)
+   - Because punctuation is stripped from wordGroups, you MUST look back at the original "script" string to determine pacing.
+   - If the final word of a wordGroup was immediately followed by "..." or "—" in the original script: add ~10 extra frames for a dramatic pause.
+   - If the final word of a wordGroup was immediately followed by "!" or "?" in the original script: add ~5 extra frames.
    - The total duration should feel like a natural, punchy spoken-word video — not too rushed, not sluggish.
 
----
+___
 
-4. "isDisplayFont" (boolean[])
-   An array of booleans — one per wordGroup — indicating whether that clip should render in the display font (true) or the body font (false).
+4. "displayFontBoolArray" (boolean[][])
+   A 2D array of booleans — one sub-array per wordGroup, containing one boolean for EACH WORD within that specific group. This controls font styling at the word level.
 
    RULES
-   - The display font is the DISPLAY font for this video — use it for words that should stand out in clips.
-   - Use false (body font) selectively for transitional, low-energy two-word bridge groups that carry little emotional weight — think of the body font as a deliberate moment of visual rest between display font bursts.
-   - Single-word emphasis groups should almost always be true.
-   - Do not cluster too many consecutive false values — no more than 2 body font clips in a row before returning to the display font.
-   - The overall feel should be bold and expressive, with the body font used only as a subtle contrast.
-
+   - Structure Mapping: The outer array length MUST match the "wordGroups" array length. Each inner array length MUST exactly match the number of words in its corresponding wordGroup string (e.g., the wordGroup "what you" must have an inner array of exactly two booleans, like [false, true]). Words are separated by spaces; attached punctuation does not create a new word.
+   - True = Display Font (bold, expressive, focal points).
+   - False = Body Font (subtle, transitional, baseline voice).
+   - RESERVE 'TRUE' FOR IMPACT: The display font (true) loses its power if overused. Treat false (the body font) as the default narrative voice. Only trigger true for heavy anchor words, punchlines, or emotional peaks.
+   - Word-Level Emphasis: In multi-word groups (2 to 4 words), the majority of words should be false. For example, "going to the store" should map to [false, false, false, true]. Purely functional phrases like "and then we" should map to [false, false, false].
+   - Single-word emphasis groups (inner array length of 1) are your visual spikes — these should almost always be [true].
+   - Embrace the contrast: Do not be afraid of consecutive false values. It is perfectly fine—and encouraged—to have a stretch of body text leading up to a massive, single-word display font drop.
 ---
 
 5. "defaultTextVariant" (string[])

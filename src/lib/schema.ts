@@ -7,7 +7,7 @@ export const VideoSchema = z.object({
   script: z.string(),
   wordGroups: z.array(z.string()),
   clipDurationInFrames: z.array(z.number().int().positive()),
-  DisplayFontBoolArray: z.array(z.boolean()),
+  DisplayFontBoolArray: z.array(z.array(z.boolean())),
   defaultTextVariant: z.array(FadeDirection),
   fadeInTransitionBool: z.array(z.boolean()),
   bodyFont: z.string(),
