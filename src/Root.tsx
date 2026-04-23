@@ -1,46 +1,40 @@
 import "./index.css";
 import { CalculateMetadataFunction, Composition, staticFile } from "remotion";
+import { Video } from "./Composition";
+import { VideoSchema, VideoData } from "./lib/schema";
 
-import { Video, VideoProps } from "./Composition";
 export const RemotionRoot: React.FC = () => {
-  // calculateMetadata={async () => {
-  //   // ← goes right here
-  //   const res = await staticFile('data.json');
-  //   const data = await res.json();
-  //   return {
-  //     props: { script: data.regExScript },
-  //     durationInFrames: data.regExScript.length * 15,
-  //   };
-  // }}'
+  const func: CalculateMetadataFunction<VideoData> = async () => {
+    const res = await fetch(staticFile("data.json"));
+    if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
 
-  const func: CalculateMetadataFunction<VideoProps> = async () => {
-    try {
-      const res = await fetch(staticFile("data.json"));
-      if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-      const data = await res.json();
-      console.log("data:", data); // check browser console
-      return {
-        props: { script: data.regExScript },
-        durationInFrames: data.regExScript.length * 15,
-      };
-    } catch (err) {
-      console.error("calculateMetadata error:", err);
-      throw err;
-    }
+    const data = VideoSchema.parse(await res.json()); // validates shape here
+
+    return {
+      props: data, // no manual remapping — field names already match
+      durationInFrames: data.clipDurationInFrames.reduce((a, b) => a + b, 0),
+    };
   };
 
   return (
-    <>
-      <Composition
-        id="KineticTypography"
-        component={Video}
-        defaultProps={{ script: ["Preview", "text", "here"] }}
-        durationInFrames={450}
-        calculateMetadata={func}
-        fps={30}
-        width={1080}
-        height={1080}
-      />
-    </>
+    <Composition
+      id="BedrockVideo"
+      component={Video}
+      calculateMetadata={func}
+      defaultProps={{
+        script: "",
+        wordGroups: ["Preview", "text", "here"],
+        clipDurationInFrames: [15, 15, 15],
+        DisplayFontBoolArray: [false, false, false],
+        defaultTextVariant: ["left", "right", "bottom"],
+        fadeInTransitionBool: [true, true, true],
+        bodyFont: "inter",
+        displayFont: "montserrat",
+      }}
+      durationInFrames={45}
+      fps={30}
+      width={1080}
+      height={1080}
+    />
   );
 };

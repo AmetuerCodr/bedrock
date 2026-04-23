@@ -1,79 +1,81 @@
-import React, { useEffect } from "react";
 import {
   AbsoluteFill,
   interpolate,
   Sequence,
   useCurrentFrame,
   Easing,
-  random,
 } from "remotion";
+import { getAvailableFonts } from "@remotion/google-fonts";
+import React from "react";
+import { useState, useEffect } from "react";
+import { VideoData } from "./lib/schema.ts";
 
-import { loadFont } from "@remotion/google-fonts/JetBrainsMono";
 
-const { fontFamily } = loadFont("normal", {
-  weights: ["700"],
-  subsets: ["latin"],
-});
+// Dynamic font loader 
+async function loadFont(importName: string): Promise<string> {
+  const available = getAvailableFonts();
+  const font = available.find(
+    (f) => f.importName.toLowerCase() === importName.toLowerCase(),
+  );
+  if (!font) throw new Error(`Font not found: ${importName}`);
+  const loaded = await font.load();
+  const { fontFamily } = loaded.loadFont("normal", {
+    weights: ["400"],
+    subsets: ["latin"],
+  });
+  return fontFamily;
+}
 
-type MyCompProps = {
-  fadeDirection: string;
-  Text: string;
-};
+// 1. Update your interface/types for the new props
+interface ClipProps {
+  text: string;
+  fontBools: boolean[]; // Replaces isDisplay
+  fadeDir: string;
+  hasFade: boolean;
+  displayFamily: string; // The bold font
+  bodyFamily: string;    // The clean font
+}
 
-export const FastEaseText: React.FC<MyCompProps> = ({
-  fadeDirection,
-  Text,
+export const Clip: React.FC<ClipProps> = ({
+  text,
+  fontBools,
+  fadeDir,
+  hasFade,
+  displayFamily,
+  bodyFamily,
 }) => {
   const frame = useCurrentFrame();
-  // FAST ease-out curve (snappy start, smooth finish)
   const easeOut = Easing.out(Easing.cubic);
-    
-  const getFadeDirection = (direction: string): string => {
-    switch (direction) {
-      case "left":
-        return `translateX(${fade.left}px)`;
-      case "right":
-        return `translateX(${fade.right}px)`;
-      case "top":
-        return `translateY(${fade.top}px)`;
-      case "bottom":
-        return `translateY(${fade.bottom}px)`;
-      default:
-        return `translateX(${fade.left}px)`;
-    }
-  };
 
-  const fade = Object.freeze({
-    left: interpolate(frame, [0, 20], [-300, 0], {
-      easing: easeOut,
-      extrapolateRight: "clamp",
-    }),
-    right: interpolate(frame, [0, 20], [300, 0], {
-      easing: easeOut,
-      extrapolateRight: "clamp",
-    }),
-    top: interpolate(frame, [0, 20], [-300, 0], {
-      easing: easeOut,
-      extrapolateRight: "clamp",
-    }),
-    bottom: interpolate(frame, [0, 20], [300, 0], {
-      easing: easeOut,
-      extrapolateRight: "clamp",
-    }),
-  });
+  const offset = interpolate(
+    frame,
+    [0, 20],
+    [
+      fadeDir === "left"
+        ? -300
+        : fadeDir === "right"
+        ? 300
+        : fadeDir === "top"
+        ? -300
+        : 300,
+      0,
+    ],
+    { easing: easeOut, extrapolateRight: "clamp" }
+  );
+
   const opacity = interpolate(frame, [0, 15], [0, 1], {
     easing: easeOut,
     extrapolateRight: "clamp",
   });
-  
-  const textStyle = {
-    color: "#fff",
-    fontSize: 100,
-    margin: 0,
-    fontFamily: fontFamily,
-    transform: `${getFadeDirection(fadeDirection)}`,
-    opacity,
-  };
+
+  const translate =
+    fadeDir === "left" || fadeDir === "right"
+      ? `translateX(${offset}px)`
+      : `translateY(${offset}px)`;
+
+  // Split the chunk of text into an array of words
+  const words = text.split(" ");
+
   return (
     <AbsoluteFill
       style={{
@@ -82,47 +84,89 @@ export const FastEaseText: React.FC<MyCompProps> = ({
         backgroundColor: "#000",
       }}
     >
-      <h1 style={textStyle}>{Text}</h1>
+      {/* The Wrapper handles the animation and layout so the words move together */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "25px", // Acts as your "space" between words. Adjust as needed!
+          fontSize: 100,
+          margin: 0,
+          transform: hasFade ? translate : undefined,
+          opacity: hasFade ? opacity : 1,
+        }}
+      >
+        {/* Map over the words and style them individually based on the fontBools array */}
+        {words.map((word, index) => {
+          // Safety check in case the LLM messes up the array length
+          const isDisplay = fontBools[index] ?? false;
+
+          return (
+            <span
+              key={index}
+              style={{
+                color: isDisplay ? "#f59e0b" : "#fff",
+                fontFamily: isDisplay ? displayFamily : bodyFamily,
+                textTransform: isDisplay ? "capitalize" : undefined,
+                fontWeight: isDisplay ? 700 : 100,
+              }}
+            >
+              {word}
+            </span>
+          );
+        })}
+      </div>
     </AbsoluteFill>
   );
 };
 
-function randomFadeDirection(i: number) {
-  const mynum = Math.floor(random(i) * 4);
-  const directions = ["top", "bottom", "left", "right"];
-  return directions[mynum];
-}
+// --- Main Video component — props are now just VideoData ---
+export const Video: React.FC<VideoData> = ({
+  wordGroups,
+  clipDurationInFrames,
+  DisplayFontBoolArray,
+  defaultTextVariant,
+  fadeInTransitionBool,
+  bodyFont,
+  displayFont,
+}) => {
+  const [bodyFamily, setBodyFamily] = useState("sans-serif");
+  const [displayFamily, setDisplayFamily] = useState("serif");
 
-function myRegex(Text: string): string[] {
-  const regex = /\b[\w']+[^\s\w]*/g;
-  const splitString = Text?.match(regex) || [];
-  return splitString;
-}
-
-// --- MAIN COMPOSITION WIRING ---
-export type VideoProps = {
-  script: string[];
-}
-export const Video: React.FC<VideoProps> = ({script}) => {
-  // const splitString = myRegex("This Video Was Made With Code isn't that cool?");
-  const splitString = script || [];
   useEffect(() => {
-    console.log(splitString);
-  }, []);
+    loadFont(bodyFont).then(setBodyFamily);
+    loadFont(displayFont).then(setDisplayFamily);
+  }, [bodyFont, displayFont]);
+
+  let fromFrame = 0;
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
-      {/* Scene 1 runs from frame 0 to 50 */}
-      {/*scene 4 my test scene*/}
-      {/*<FastEaseText fadeDirection="right" Text="My name is Shammah" />*/}
-      {splitString.map((item, i) => (
-        <Sequence  key={i} durationInFrames={50} from={15 * i}>
-          <FastEaseText
-            fadeDirection={randomFadeDirection(i)}
-            Text={item}
-          />
-        </Sequence>
-      ))}
+      {wordGroups.map((text, i) => {
+        const start = fromFrame;
+        fromFrame += clipDurationInFrames[i];
+    
+        return (
+          <Sequence
+            key={i}
+            from={start}
+            durationInFrames={clipDurationInFrames[i]}
+          >
+            <Clip
+              text={text}
+              // Pass the sub-array of booleans for this specific word group
+              fontBools={DisplayFontBoolArray[i]} 
+              fadeDir={defaultTextVariant[i]}
+              hasFade={fadeInTransitionBool[i]}
+              // Pass BOTH fonts so the Clip component can alternate them
+              displayFamily={displayFamily}
+              bodyFamily={bodyFamily}
+            />
+          </Sequence>
+        );
+      })}
     </AbsoluteFill>
   );
 };
