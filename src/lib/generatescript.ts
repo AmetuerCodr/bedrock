@@ -6,6 +6,11 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 // Derive the JSON schema from your Zod schema — no manual sync needed
 const videoJsonSchema = zodToJsonSchema(VideoSchema as any);
 
+
+export async function generateVoice(script: string) {
+  
+}
+
 export async function generateScript(prompt: string) {
   const ai = new GoogleGenAI({ apiKey: Bun.env.GEMINI_API_KEY });
 
