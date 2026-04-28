@@ -4,14 +4,17 @@ import {
   Sequence,
   useCurrentFrame,
   Easing,
+  useVideoConfig,
+  spring,
 } from "remotion";
 import { getAvailableFonts } from "@remotion/google-fonts";
 import React from "react";
 import { useState, useEffect } from "react";
 import { VideoData } from "./lib/schema.ts";
+import { weightBreathe } from "./lib/animations/weightbreathe.ts";
+import { shearsnap } from "./lib/animations/shearsnap.ts";
 
-
-// Dynamic font loader 
+// Dynamic font loader
 async function loadFont(importName: string): Promise<string> {
   const available = getAvailableFonts();
   const font = available.find(
@@ -33,7 +36,39 @@ interface ClipProps {
   fadeDir: string;
   hasFade: boolean;
   displayFamily: string; // The bold font
-  bodyFamily: string;    // The clean font
+  bodyFamily: string; // The clean font
+  color: string;
+}
+
+/// animations
+
+// animations/letterDrift.ts
+
+export function letterDrift(
+  frame: number,
+  fps: number,
+  letterIndex: number,
+  delay = 3,
+) {
+  const seed = letterIndex * 7.3;
+  const ox = Math.sin(seed) * 60;
+  const oy = Math.cos(seed * 1.3) * 50;
+  const rot = Math.sin(seed * 2.1) * 25;
+
+  const progress = spring({
+    frame: frame - letterIndex * delay,
+    fps,
+    config: { damping: 14, stiffness: 120, mass: 0.8 },
+  });
+
+  return {
+    x: interpolate(progress, [0, 1], [ox, 0]),
+    y: interpolate(progress, [0, 1], [oy, 0]),
+    rotate: interpolate(progress, [0, 1], [rot, 0]),
+    opacity: interpolate(progress, [0, 0.3], [0, 1], {
+      extrapolateRight: "clamp",
+    }),
+  };
 }
 
 export const Clip: React.FC<ClipProps> = ({
@@ -43,9 +78,12 @@ export const Clip: React.FC<ClipProps> = ({
   hasFade,
   displayFamily,
   bodyFamily,
+  color,
 }) => {
   const frame = useCurrentFrame();
   const easeOut = Easing.out(Easing.cubic);
+
+  const { fps } = useVideoConfig();
 
   const offset = interpolate(
     frame,
@@ -54,13 +92,13 @@ export const Clip: React.FC<ClipProps> = ({
       fadeDir === "left"
         ? -300
         : fadeDir === "right"
-        ? 300
-        : fadeDir === "top"
-        ? -300
-        : 300,
+          ? 300
+          : fadeDir === "top"
+            ? -300
+            : 300,
       0,
     ],
-    { easing: easeOut, extrapolateRight: "clamp" }
+    { easing: easeOut, extrapolateRight: "clamp" },
   );
 
   const opacity = interpolate(frame, [0, 15], [0, 1], {
@@ -102,14 +140,18 @@ export const Clip: React.FC<ClipProps> = ({
         {words.map((word, index) => {
           // Safety check in case the LLM messes up the array length
           const isDisplay = fontBools[index] ?? false;
+          const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
+          const { fontWeight } = weightBreathe(frame, fps, index);
 
           return (
             <span
               key={index}
               style={{
-                color: isDisplay ? "#f59e0b" : "#fff",
+                color: isDisplay ? color : "#fff",
                 fontFamily: isDisplay ? displayFamily : bodyFamily,
                 textTransform: isDisplay ? "capitalize" : undefined,
+                transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+                opacity,
                 fontWeight: isDisplay ? 700 : 100,
               }}
             >
@@ -122,6 +164,11 @@ export const Clip: React.FC<ClipProps> = ({
   );
 };
 
+export function TextAnimation() {
+  const frame = useCurrentFrame();
+  const fps = useVideoConfig();
+}
+
 // --- Main Video component — props are now just VideoData ---
 export const Video: React.FC<VideoData> = ({
   wordGroups,
@@ -131,6 +178,7 @@ export const Video: React.FC<VideoData> = ({
   fadeInTransitionBool,
   bodyFont,
   displayFont,
+  displayFontColor,
 }) => {
   const [bodyFamily, setBodyFamily] = useState("sans-serif");
   const [displayFamily, setDisplayFamily] = useState("serif");
@@ -147,7 +195,7 @@ export const Video: React.FC<VideoData> = ({
       {wordGroups.map((text, i) => {
         const start = fromFrame;
         fromFrame += clipDurationInFrames[i];
-    
+
         return (
           <Sequence
             key={i}
@@ -157,9 +205,12 @@ export const Video: React.FC<VideoData> = ({
             <Clip
               text={text}
               // Pass the sub-array of booleans for this specific word group
-              fontBools={DisplayFontBoolArray[i]} 
+
+              // color={
+              fontBools={DisplayFontBoolArray[i]}
               fadeDir={defaultTextVariant[i]}
               hasFade={fadeInTransitionBool[i]}
+              color={displayFontColor}
               // Pass BOTH fonts so the Clip component can alternate them
               displayFamily={displayFamily}
               bodyFamily={bodyFamily}

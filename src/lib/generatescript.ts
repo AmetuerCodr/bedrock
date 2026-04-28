@@ -110,7 +110,8 @@ ___
    - Must be a real, currently available Google Font.
    - Used for all clips where isDisplayFont is true.
 
-
+9. "displayFontColor" (string)
+A single hexadecimal color value (e.g., '#FF6B35', '#E63946', '#6366F1', '#10B981', '#0891B2') representing the display/heading font color. Must be a vibrant, eye-catching accent color that creates strong visual contrast against the body font color. Avoid neutrals — pick something bold and distinctive.
 ---
 `,
     },
