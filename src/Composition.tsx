@@ -10,10 +10,8 @@ import { getAvailableFonts } from "@remotion/google-fonts";
 import React from "react";
 import { useState, useEffect } from "react";
 import { VideoData } from "./lib/schema.ts";
-import { weightBreathe } from "./lib/animations/weightbreathe.ts";
-import { shearsnap } from "./lib/animations/shearsnap.ts";
+import { shearSnap } from "./lib/animations/shearsnap.ts";
 import { letterDrift } from "./lib/animations/letterdrift.ts";
-
 // Dynamic font loader
 async function loadFont(importName: string): Promise<string> {
   const available = getAvailableFonts();
@@ -105,8 +103,8 @@ export const Clip: React.FC<ClipProps> = ({
           gap: "25px", // Acts as your "space" between words. Adjust as needed!
           fontSize: 100,
           margin: 0,
-          transform: hasFade ? translate : undefined,
-          opacity: hasFade ? opacity : 1,
+          // transform: hasFade ? translate : undefined,
+          // opacity: hasFade ? opacity : 1,
         }}
       >
         {/* Map over the words and style them individually based on the fontBools array */}
@@ -114,7 +112,11 @@ export const Clip: React.FC<ClipProps> = ({
           // Safety check in case the LLM messes up the array length
           const isDisplay = fontBools[index] ?? false;
           const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
-          const { fontWeight } = weightBreathe(frame, fps, index);
+          const { skewX, translateX, blur } = shearSnap(frame, fps, index, {
+            delayPerWord: 8,
+          });
+
+          // fade && letter drift animations && shearSnap
 
           return (
             <span
@@ -123,7 +125,9 @@ export const Clip: React.FC<ClipProps> = ({
                 color: isDisplay ? color : "#fff",
                 fontFamily: isDisplay ? displayFamily : bodyFamily,
                 textTransform: isDisplay ? "capitalize" : undefined,
-                transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+                // transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+                transform: `skewX(${skewX}deg) translateX(${translateX}px)`,
+                filter: `blur(${blur}px)`,
                 opacity,
                 fontWeight: isDisplay ? 700 : 100,
               }}

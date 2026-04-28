@@ -1,71 +1,75 @@
-import { spring, interpolate } from 'remotion';
+import { interpolate, Easing } from "remotion";
 
 /**
- * WEIGHT BREATH
- * Animates font-weight from a thin value up to a heavy value and back down,
- * creating a "breathing" pulse. Staggered per word index.
- * Requires a variable font that supports the wght axis (e.g. Inter, Syne).
+ * CLIP SWEEP REVEAL
+ * A clip-path wipes left to right, revealing full-brightness text
+ * from a dim ghost underneath. Staggered per line index.
+ *
+ * This one uses interpolate() directly (not spring) because clip-path
+ * sweeps feel better with a custom cubic bezier — spring physics here
+ * produce too much wobble on a hard geometric edge.
  *
  * Usage:
- *   words.map((word, i) => {
- *     const { fontWeight, opacity } = weightBreathe(frame, fps, i);
- *     return <span style={{ fontWeight, opacity }}>{word}</span>
+ *   // You need TWO layers per line: a dim "ghost" and a bright "revealed" layer.
+ *   lines.map((text, i) => {
+ *     const { clipPath, ghostOpacity } = clipSweep(frame, fps, i);
+ *     return (
+ *       <div style={{ position: 'relative' }}>
+ *         // Ghost layer — always visible, dim
+ *         <span style={{ opacity: ghostOpacity, color: '#333' }}>{text}</span>
+ *         // Revealed layer — clipped until sweep passes
+ *         <span style={{
+ *           position: 'absolute', inset: 0,
+ *           clipPath,
+ *           color: '#f5f5f4',
+ *         }}>
+ *           {text}
+ *         </span>
+ *       </div>
+ *     )
  *   })
- *
- * Note: fontWeight must be applied as a number (e.g. style={{ fontWeight: 300 }})
- * not as a font-variation-settings string. React handles the interpolation.
  */
-export function weightBreathe(
+export function clipSweep(
   frame: number,
   fps: number,
-  wordIndex: number,
+  lineIndex: number,
   options: {
-    delayPerWord?: number; // frames between each word's pulse
-    fromWeight?: number;   // starting font-weight (thin end)
-    toWeight?: number;     // peak font-weight (heavy end)
-    holdFrames?: number;   // how long to hold at peak before releasing
-    damping?: number;
-    stiffness?: number;
-  } = {}
+    delayPerLine?: number; // frames between each line's sweep
+    durationFrames?: number; // how many frames the sweep takes
+    ghostOpacity?: number; // opacity of the dim ghost text (0–1)
+  } = {},
 ) {
   const {
-    delayPerWord = 8,
-    fromWeight = 100,
-    toWeight = 900,
-    holdFrames = 12,
-    damping = 18,
-    stiffness = 80,
+    delayPerLine = 12,
+    durationFrames = 18,
+    ghostOpacity = 0.15,
   } = options;
 
-  const localFrame = frame - wordIndex * delayPerWord;
+  const localFrame = frame - lineIndex * delayPerLine;
 
-  // Spring up to peak weight
-  const riseProgress = spring({
-    frame: localFrame,
-    fps,
-    config: { damping, stiffness, mass: 1 },
+  // Percent of sweep completed: 0% (fully hidden) → 100% (fully revealed)
+  // Using a fast-in, eased-out cubic bezier for a mechanical sweep feel
+  const sweepPercent = interpolate(localFrame, [0, durationFrames], [0, 100], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.76, 0, 0.24, 1),
   });
 
-  // Spring back down after hold
-  const fallProgress = spring({
-    frame: localFrame - holdFrames,
-    fps,
-    config: { damping: damping + 4, stiffness: stiffness - 20, mass: 1 },
-  });
+  // clip-path inset: inset(top right bottom left)
+  // We animate the right inset from 100% (fully clipped) → 0% (fully revealed)
+  const rightInset = 100 - sweepPercent;
+  const clipPath = `inset(0 ${rightInset}% 0 0)`;
 
-  // Net weight: rise up, then fall back toward fromWeight
-  const weight = interpolate(riseProgress, [0, 1], [fromWeight, toWeight])
-    - interpolate(fallProgress, [0, 1], [0, toWeight - fromWeight]);
-
-  const clampedWeight = Math.max(fromWeight, Math.min(toWeight, weight));
-
-  const opacity = interpolate(localFrame, [0, 6], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
+  // Ghost fades in slightly before the sweep starts, so there's something to reveal from
+  const ghostFade = interpolate(localFrame, [-4, 2], [0, ghostOpacity], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
   });
 
   return {
-    fontWeight: clampedWeight,
-    opacity,
+    clipPath,
+    ghostOpacity: ghostFade,
+    // Convenience: percentage complete (0–1) in case you want to drive other props
+    progress: sweepPercent / 100,
   };
 }

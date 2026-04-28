@@ -16,6 +16,7 @@ import { spring, interpolate } from 'remotion';
  * not as a font-variation-settings string. React handles the interpolation.
  */
 export function weightBreathe(
+
   frame: number,
   fps: number,
   wordIndex: number,

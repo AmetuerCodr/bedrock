@@ -1,71 +1,101 @@
-import { spring, interpolate } from 'remotion';
+import { spring, interpolate } from "remotion";
 
 /**
- * WEIGHT BREATH
- * Animates font-weight from a thin value up to a heavy value and back down,
- * creating a "breathing" pulse. Staggered per word index.
- * Requires a variable font that supports the wght axis (e.g. Inter, Syne).
+ * SHEAR SNAP
+ * Word arrives from an italic skew angle, snaps hard to upright,
+ * then micro-overshoots back slightly before settling.
+ * Staggered per word index.
  *
  * Usage:
  *   words.map((word, i) => {
- *     const { fontWeight, opacity } = weightBreathe(frame, fps, i);
- *     return <span style={{ fontWeight, opacity }}>{word}</span>
+ *     const { skewX, translateX, opacity } = shearSnap(frame, fps, i);
+ *     return (
+ *       <span style={{
+ *         transform: `skewX(${skewX}deg) translateX(${translateX}px)`,
+ *         opacity,
+ *         display: 'inline-block', // required for transform on inline elements
+ *       }}>
+ *         {word}
+ *       </span>
+ *     )
  *   })
- *
- * Note: fontWeight must be applied as a number (e.g. style={{ fontWeight: 300 }})
- * not as a font-variation-settings string. React handles the interpolation.
  */
-export function weightBreathe(
+export function shearSnap(
   frame: number,
   fps: number,
   wordIndex: number,
   options: {
-    delayPerWord?: number; // frames between each word's pulse
-    fromWeight?: number;   // starting font-weight (thin end)
-    toWeight?: number;     // peak font-weight (heavy end)
-    holdFrames?: number;   // how long to hold at peak before releasing
+    delayPerWord?: number; // frames between each word
+    fromSkew?: number; // starting skew in degrees (negative = lean left)
+    overshootSkew?: number; // micro-overshoot skew on settle (opposite direction)
     damping?: number;
     stiffness?: number;
-  } = {}
+  } = {},
 ) {
   const {
-    delayPerWord = 8,
-    fromWeight = 100,
-    toWeight = 900,
-    holdFrames = 12,
-    damping = 18,
-    stiffness = 80,
+    delayPerWord = 10,
+    fromSkew = -28,
+    overshootSkew = 5,
+    damping = 16,
+    stiffness = 140,
   } = options;
 
   const localFrame = frame - wordIndex * delayPerWord;
 
-  // Spring up to peak weight
-  const riseProgress = spring({
+  // Main snap: skew collapses to 0
+  const snapProgress = spring({
     frame: localFrame,
     fps,
-    config: { damping, stiffness, mass: 1 },
+    config: { damping, stiffness, mass: 0.8 },
   });
 
-  // Spring back down after hold
-  const fallProgress = spring({
-    frame: localFrame - holdFrames,
+  // Micro re-shear: slight overshoot in opposite direction after snap
+  const overshootProgress = spring({
+    frame: localFrame - 4,
     fps,
-    config: { damping: damping + 4, stiffness: stiffness - 20, mass: 1 },
+    config: { damping: damping + 8, stiffness: stiffness + 30, mass: 0.5 },
   });
 
-  // Net weight: rise up, then fall back toward fromWeight
-  const weight = interpolate(riseProgress, [0, 1], [fromWeight, toWeight])
-    - interpolate(fallProgress, [0, 1], [0, toWeight - fromWeight]);
+  const skewX =
+    interpolate(snapProgress, [0, 1], [fromSkew, 0]) +
+    interpolate(overshootProgress, [0, 1], [0, overshootSkew]) -
+    interpolate(overshootProgress, [0, 1], [0, overshootSkew]); // resolves to 0 at rest
 
-  const clampedWeight = Math.max(fromWeight, Math.min(toWeight, weight));
+  // Simpler version that actually produces the overshoot feel:
+  const baseSkew = interpolate(snapProgress, [0, 1], [fromSkew, 0]);
+  const microSkew =
+    interpolate(overshootProgress, [0, 1], [0, overshootSkew], {
+      extrapolateRight: "clamp",
+    }) -
+    interpolate(
+      spring({
+        frame: localFrame - 10,
+        fps,
+        config: { damping: 20, stiffness: 100 },
+      }),
+      [0, 1],
+      [0, overshootSkew],
+      { extrapolateRight: "clamp" },
+    );
 
-  const opacity = interpolate(localFrame, [0, 6], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
+  // translateX compensates for the visual shift caused by skewing
+  const translateX = interpolate(snapProgress, [0, 1], [-12, 0]);
+
+  // Motion blur approximation: slight blur on fast frames, clears on settle
+  const blur = interpolate(localFrame, [0, 8], [3, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  const opacity = interpolate(localFrame, [0, 4], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
   });
 
   return {
-    fontWeight: clampedWeight,
+    skewX: baseSkew + microSkew,
+    translateX,
+    blur,
     opacity,
   };
 }
