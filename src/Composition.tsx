@@ -12,6 +12,8 @@ import { useState, useEffect } from "react";
 import { VideoData } from "./lib/schema.ts";
 import { shearSnap } from "./lib/animations/shearsnap.ts";
 import { letterDrift } from "./lib/animations/letterdrift.ts";
+
+let animationStyle;
 // Dynamic font loader
 async function loadFont(importName: string): Promise<string> {
   const available = getAvailableFonts();
@@ -116,6 +118,8 @@ export const Clip: React.FC<ClipProps> = ({
 
           // console.log(wordGroups);
           const isDisplay = fontBools[index] ?? false;
+          const a = animationType[index];
+
           const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
           const { skewX, translateX, blur } = shearSnap(frame, fps, index, {
             delayPerWord: 8,
@@ -140,32 +144,34 @@ export const Clip: React.FC<ClipProps> = ({
             opacity: opacity,
           };
 
-          let animationStyle;
+          function playAnimation(animation: string): void {
+            switch (animation) {
+              case "letterDrift":
+                animationStyle = letterDriftStyle;
 
-          switch (animationType[index]) {
-            case "letterDrift":
-              animationStyle = letterDriftStyle;
+                console.log(
+                  `animation type: ${animationType[index]} at index ${index}`,
+                );
 
-              console.log(
-                `animation type: ${animationType[index]} at index ${index}`,
-              );
+                break;
+              case "shearSnap":
+                animationStyle = shearSnapStyle;
 
-              break;
-            case "shearSnap":
-              animationStyle = shearSnapStyle;
+                console.log(
+                  `animation type: ${animationType[index]} at index ${index}`,
+                );
+                break;
+              case "Fade":
+                animationStyle = fadeStyle;
 
-              console.log(
-                `animation type: ${animationType[index]} at index ${index}`,
-              );
-              break;
-            case "Fade":
-              animationStyle = fadeStyle;
-
-              console.log(
-                `animation type: ${animationType[index]} at index ${index}`,
-              );
-              break;
+                console.log(
+                  `animation type: ${animationType[index]} at index ${index}`,
+                );
+                break;
+            }
           }
+
+          playAnimation(a);
 
           return (
             <span
@@ -186,11 +192,6 @@ export const Clip: React.FC<ClipProps> = ({
     </AbsoluteFill>
   );
 };
-
-export function TextAnimation() {
-  const frame = useCurrentFrame();
-  const fps = useVideoConfig();
-}
 
 // --- Main Video component — props are now just VideoData ---
 export const Video: React.FC<VideoData> = ({
@@ -229,7 +230,7 @@ export const Video: React.FC<VideoData> = ({
             <Clip
               wordGroups={wordGroups}
               text={text}
-              animationType={animationType}
+              animationType={animationType[i]}
               // Pass the sub-array of booleans for this specific word group
 
               // color={

@@ -85,9 +85,8 @@ ___
 
 ---
 
-6. "animationType" (string[])
-   An array of strings — one per wordGroup — indicating the type of animation this clip gets [Fade, letterDrift, shearSnap] .
-
+6. "animationType" (string[][])
+ A 2D array of strings — one per wordGroup — indicating the type of animation each word gets [Fade, letterDrift, shearSnap] .
    RULES
    - shearSnap should be used sparingly; on the most important of points since it does not look appealing if several shearSnap animations are back to back.
    - letterDrift should be used more often than shearSnap, but still use it sparingly.
