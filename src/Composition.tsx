@@ -86,7 +86,7 @@ export const Clip: React.FC<ClipProps> = ({
       ? `translateX(${offset}px)`
       : `translateY(${offset}px)`;
 
-  console.log(animationType);
+  // console.log(animationType);
   // Split the chunk of text into an array of words
   const words = text.split(" ");
 
@@ -114,7 +114,7 @@ export const Clip: React.FC<ClipProps> = ({
         {words.map((word, index) => {
           // Safety check in case the LLM messes up the array length
 
-          console.log(wordGroups);
+          // console.log(wordGroups);
           const isDisplay = fontBools[index] ?? false;
           const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
           const { skewX, translateX, blur } = shearSnap(frame, fps, index, {
@@ -145,15 +145,25 @@ export const Clip: React.FC<ClipProps> = ({
           switch (animationType[index]) {
             case "letterDrift":
               animationStyle = letterDriftStyle;
-              console.log("animation type:", animationType[index]);
+
+              console.log(
+                `animation type: ${animationType[index]} at index ${index}`,
+              );
+
               break;
             case "shearSnap":
               animationStyle = shearSnapStyle;
-              console.log("animation type:", animationType[index]);
+
+              console.log(
+                `animation type: ${animationType[index]} at index ${index}`,
+              );
               break;
             case "Fade":
               animationStyle = fadeStyle;
-              console.log("animation type:", animationType[index]);
+
+              console.log(
+                `animation type: ${animationType[index]} at index ${index}`,
+              );
               break;
           }
 
