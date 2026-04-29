@@ -6,10 +6,7 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 // Derive the JSON schema from your Zod schema — no manual sync needed
 const videoJsonSchema = zodToJsonSchema(VideoSchema as any);
 
-
-export async function generateVoice(script: string) {
-  
-}
+export async function generateVoice(script: string) {}
 
 export async function generateScript(prompt: string) {
   const ai = new GoogleGenAI({ apiKey: Bun.env.GEMINI_API_KEY });
@@ -88,7 +85,18 @@ ___
 
 ---
 
-6. "fadeInTransitionBool" (boolean[])
+6. "animationType" (string[])
+   An array of strings — one per wordGroup — indicating the type of animation this clip gets [Fade, letterDrift, shearSnap] .
+
+   RULES
+   - shearSnap should be used sparingly; on the most important of points since it does not look appealing if several shearSnap animations are back to back.
+   - letterDrift should be used more often than shearSnap, but still use it sparingly.
+   - Fade can be used the most out of the three animations, but be sure not to use it for every single wordGroup.
+   - think hard to maintain a natural flow of animations.
+---
+
+
+7. "fadeInTransitionBool" (boolean[])
    An array of booleans — one per wordGroup — indicating whether the clip animates in with a fade transition (true) or appears as a hard cut (false).
 
    RULES
@@ -100,7 +108,7 @@ ___
 
 ---
 
-7. "bodyFont" (string)
+8. "bodyFont" (string)
    A single font name from Google Fonts written in camelCase with no spaces — exactly as you would reference it in a JavaScript variable (e.g., "raleway", "poppins", "spaceGrotesk").
    - Capitalize each word except the first: "playFair Display" → "playFairDisplay", "Space Grotesk" → "spaceGrotesk".
    - Should suit the tone and subject matter of the script.
@@ -109,13 +117,13 @@ ___
 
 ---
 
-8. "displayFont" (string)
+9. "displayFont" (string)
    A single font name from Google Fonts written in camelCase with no spaces, using the same capitalization convention as bodyFont (e.g., "playfairDisplay", "bebasNeue", "dmSerifDisplay").
    - Should provide clear visual contrast to the bodyFont (e.g., if bodyFont is a clean sans-serif, consider a bold serif, slab, or expressive display face).
    - Must be a real, currently available Google Font.
    - Used for all clips where isDisplayFont is true.
 
-9. "displayFontColor" (string)
+10. "displayFontColor" (string)
 A single hexadecimal color value (e.g., '#FF6B35', '#E63946', '#6366F1', '#10B981', '#0891B2') representing the display/heading font color. Must be a vibrant, eye-catching accent color that creates strong visual contrast against the body font color. Avoid neutrals — pick something bold and distinctive.
 ---
 `,

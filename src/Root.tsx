@@ -25,6 +25,7 @@ export const RemotionRoot: React.FC = () => {
         script: "",
         wordGroups: ["Preview", "text", "here"],
         clipDurationInFrames: [15, 15, 15],
+        animationType: ["Fade", "Fade", "letterDrift"],
         DisplayFontBoolArray: [[true, false, false]],
         displayFontColor: "#22d3ee",
         defaultTextVariant: ["left", "right", "bottom"],

@@ -29,6 +29,7 @@ async function loadFont(importName: string): Promise<string> {
 
 // 1. Update your interface/types for the new props
 interface ClipProps {
+  animationType: string[];
   text: string;
   fontBools: boolean[]; // Replaces isDisplay
   fadeDir: string;
@@ -36,6 +37,7 @@ interface ClipProps {
   displayFamily: string; // The bold font
   bodyFamily: string; // The clean font
   color: string;
+  wordGroups: string[];
 }
 
 /// animations
@@ -47,8 +49,10 @@ export const Clip: React.FC<ClipProps> = ({
   fontBools,
   fadeDir,
   hasFade,
+  wordGroups,
   displayFamily,
   bodyFamily,
+  animationType,
   color,
 }) => {
   const frame = useCurrentFrame();
@@ -82,6 +86,7 @@ export const Clip: React.FC<ClipProps> = ({
       ? `translateX(${offset}px)`
       : `translateY(${offset}px)`;
 
+  console.log(animationType);
   // Split the chunk of text into an array of words
   const words = text.split(" ");
 
@@ -103,32 +108,63 @@ export const Clip: React.FC<ClipProps> = ({
           gap: "25px", // Acts as your "space" between words. Adjust as needed!
           fontSize: 100,
           margin: 0,
-          // transform: hasFade ? translate : undefined,
-          // opacity: hasFade ? opacity : 1,
         }}
       >
         {/* Map over the words and style them individually based on the fontBools array */}
         {words.map((word, index) => {
           // Safety check in case the LLM messes up the array length
+
+          console.log(wordGroups);
           const isDisplay = fontBools[index] ?? false;
           const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
           const { skewX, translateX, blur } = shearSnap(frame, fps, index, {
             delayPerWord: 8,
+            damping: 26,
+            stiffness: 70,
           });
 
-          // fade && letter drift animations && shearSnap
+          // fade && letter drift  && shearSnap
+
+          const letterDriftStyle = {
+            transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+            opacity: opacity,
+          };
+
+          const shearSnapStyle = {
+            transform: `skewX(${skewX}deg) translateX(${translateX}px)`,
+            filter: `blur(${blur}px)`,
+          };
+
+          const fadeStyle = {
+            transform: translate,
+            opacity: opacity,
+          };
+
+          let animationStyle;
+
+          switch (animationType[index]) {
+            case "letterDrift":
+              animationStyle = letterDriftStyle;
+              console.log("animation type:", animationType[index]);
+              break;
+            case "shearSnap":
+              animationStyle = shearSnapStyle;
+              console.log("animation type:", animationType[index]);
+              break;
+            case "Fade":
+              animationStyle = fadeStyle;
+              console.log("animation type:", animationType[index]);
+              break;
+          }
 
           return (
             <span
               key={index}
               style={{
+                ...animationStyle,
                 color: isDisplay ? color : "#fff",
                 fontFamily: isDisplay ? displayFamily : bodyFamily,
                 textTransform: isDisplay ? "capitalize" : undefined,
-                // transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
-                transform: `skewX(${skewX}deg) translateX(${translateX}px)`,
-                filter: `blur(${blur}px)`,
-                opacity,
                 fontWeight: isDisplay ? 700 : 100,
               }}
             >
@@ -153,6 +189,7 @@ export const Video: React.FC<VideoData> = ({
   DisplayFontBoolArray,
   defaultTextVariant,
   fadeInTransitionBool,
+  animationType,
   bodyFont,
   displayFont,
   displayFontColor,
@@ -180,7 +217,9 @@ export const Video: React.FC<VideoData> = ({
             durationInFrames={clipDurationInFrames[i]}
           >
             <Clip
+              wordGroups={wordGroups}
               text={text}
+              animationType={animationType}
               // Pass the sub-array of booleans for this specific word group
 
               // color={
