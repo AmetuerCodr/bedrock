@@ -99,6 +99,7 @@ export const Clip: React.FC<ClipProps> = ({
         alignItems: "center",
         backgroundColor: "#000",
       }}
+      
     >
       {/* The Wrapper handles the animation and layout so the words move together */}
       <div

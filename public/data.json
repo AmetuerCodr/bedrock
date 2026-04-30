@@ -1,230 +1,71 @@
 {
-  "script": "The secret to wealth isn't luck. It's not a shortcut. It's discipline. While others sleep, you work. While they spend, you save. It's boring. It's repetitive. But it's the only way to the top. Stay focused. Stay disciplined.",
+  "script": "Everyone wants the shortcut. The secret hack. The overnight success. But the truth... is boring. It's discipline. Doing the work, when you hate it. Day after day. That is the only way.",
   "wordGroups": [
-    "The secret",
-    "to wealth",
-    "isnt luck",
-    "Its not",
-    "a shortcut",
-    "Its",
-    "discipline",
-    "While others sleep",
-    "you work",
-    "While they spend",
-    "you save",
-    "Its boring",
-    "Its repetitive",
-    "But",
-    "its the only",
-    "way",
-    "to the top",
-    "Stay focused",
-    "Stay",
-    "disciplined"
+    "Everyone wants",
+    "the shortcut",
+    "The secret hack",
+    "The overnight success",
+    "But the truth",
+    "is boring",
+    "It's discipline",
+    "Doing the work",
+    "when you hate",
+    "it",
+    "Day after day",
+    "That is",
+    "the",
+    "only way"
   ],
   "clipDurationInFrames": [
-    20,
-    25,
-    25,
-    20,
-    25,
-    20,
-    35,
-    30,
-    25,
-    30,
-    25,
-    25,
-    25,
-    20,
-    30,
-    25,
-    35,
-    30,
-    20,
-    40
+    22, 30, 30, 35, 45, 30, 40, 32, 25, 25, 35, 20, 15, 40
   ],
   "DisplayFontBoolArray": [
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      false
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false
-    ],
-    [
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false
-    ],
-    [
-      false,
-      false,
-      false
-    ],
-    [
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false
-    ],
-    [
-      true
-    ]
+    [false, false],
+    [false, true],
+    [false, false, true],
+    [false, false, true],
+    [false, false, true],
+    [false, true],
+    [false, true],
+    [false, false, true],
+    [false, false, true],
+    [false],
+    [true, true, true],
+    [false, false],
+    [false],
+    [false, true]
   ],
   "defaultTextVariant": [
     "left",
     "right",
     "bottom",
-    "left",
-    "right",
-    "bottom",
     "top",
-    "left",
-    "right",
-    "left",
-    "right",
     "left",
     "right",
     "bottom",
     "left",
     "right",
     "top",
-    "left",
     "bottom",
-    "top"
+    "left",
+    "right",
+    "bottom"
   ],
   "animationType": [
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "letterDrift",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "shearSnap"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "Fade"
-    ],
-    [
-      "letterDrift",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "Fade"
-    ],
-    [
-      "letterDrift",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "letterDrift",
-      "letterDrift",
-      "letterDrift"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "shearSnap",
-      "shearSnap",
-      "shearSnap"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "shearSnap"
-    ]
+    ["Fade", "Fade"],
+    ["Fade", "letterDrift"],
+    ["Fade", "Fade", "shearSnap"],
+    ["Fade", "Fade", "letterDrift"],
+    ["Fade", "Fade", "Fade"],
+    ["Fade", "shearSnap"],
+    ["Fade", "letterDrift"],
+    ["Fade", "Fade", "Fade"],
+    ["Fade", "Fade", "shearSnap"],
+    ["Fade"],
+    ["letterDrift", "letterDrift", "letterDrift"],
+    ["Fade", "Fade"],
+    ["Fade"],
+    ["Fade", "letterDrift"]
   ],
   "fadeInTransitionBool": [
     true,
@@ -232,20 +73,14 @@
     true,
     true,
     true,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
     true,
     false,
     true,
     true,
-    true,
-    true,
     false,
+    true,
+    true,
+    true,
     true
   ],
   "bodyFont": "lato",
