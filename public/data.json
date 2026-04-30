@@ -1,102 +1,75 @@
 {
-  "script": "Everyone wants the shortcut. The secret hack. The overnight success. But the truth... is boring. It's discipline. Doing the work, when you hate it. Day after day. That is the only way.",
+  "script": "Purpose isn't a destination or a grand calling found in a dusty book. It's the friction between who you are and what the world needs right now. It is the quiet hum of focus when everything else falls away. Don't look for a sign; build a fire.",
   "wordGroups": [
-    "Everyone wants",
-    "the shortcut",
-    "The secret hack",
-    "The overnight success",
-    "But the truth",
-    "is boring",
-    "Its discipline",
-    "Doing the work",
-    "when you hate",
-    "it",
-    "Day after day",
-    "That is",
-    "the",
-    "only way"
+    "Purpose",
+    "isnt a",
+    "destination",
+    "or a",
+    "grand calling",
+    "found in",
+    "a dusty book",
+    "Its the friction",
+    "between who",
+    "you are",
+    "and what",
+    "the world",
+    "needs",
+    "right now",
+    "It is",
+    "the quiet hum",
+    "of focus",
+    "when everything",
+    "else falls",
+    "away",
+    "Dont look",
+    "for a sign",
+    "build a",
+    "fire"
   ],
   "clipDurationInFrames": [
-    22,
-    30,
-    30,
-    35,
-    45,
-    30,
-    40,
-    32,
-    25,
-    25,
-    35,
-    20,
-    15,
-    40
+    30, 20, 32, 15, 25, 15, 35, 28, 20, 22, 15, 20, 30, 35, 15, 28, 25, 22, 20,
+    40, 22, 30, 20, 40
   ],
   "DisplayFontBoolArray": [
-    [
-      false,
-      false
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false,
-      false,
-      true
-    ],
-    [
-      false
-    ],
-    [
-      true,
-      true,
-      true
-    ],
-    [
-      false,
-      false
-    ],
-    [
-      false
-    ],
-    [
-      false,
-      true
-    ]
+    [true],
+    [false, false],
+    [true],
+    [false, false],
+    [false, true],
+    [false, false],
+    [false, false, true],
+    [false, false, true],
+    [false, false],
+    [false, false],
+    [false, false],
+    [false, false],
+    [true],
+    [false, true],
+    [false, false],
+    [false, false, true],
+    [false, true],
+    [false, false],
+    [false, false],
+    [true],
+    [false, false],
+    [false, false, true],
+    [false, false],
+    [true]
   ],
   "defaultTextVariant": [
+    "bottom",
     "left",
     "right",
+    "left",
+    "right",
+    "bottom",
+    "left",
+    "top",
+    "left",
+    "right",
+    "bottom",
+    "right",
+    "left",
     "bottom",
     "top",
     "left",
@@ -105,72 +78,35 @@
     "left",
     "right",
     "top",
-    "bottom",
     "left",
     "right",
     "bottom"
   ],
   "animationType": [
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "shearSnap"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
-      "shearSnap"
-    ],
-    [
-      "Fade",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
-      "Fade",
-      "shearSnap"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "letterDrift",
-      "letterDrift",
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "Fade",
-      "letterDrift"
-    ]
+    ["shearSnap"],
+    ["Fade", "Fade"],
+    ["letterDrift"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade", "letterDrift"],
+    ["Fade", "Fade", "shearSnap"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["letterDrift"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade", "letterDrift"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade"],
+    ["letterDrift"],
+    ["Fade", "Fade"],
+    ["Fade", "Fade", "letterDrift"],
+    ["Fade", "Fade"],
+    ["shearSnap"]
   ],
   "fadeInTransitionBool": [
     true,
@@ -182,13 +118,24 @@
     false,
     true,
     true,
+    true,
+    true,
+    true,
     false,
     true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
     true,
     true,
     true
   ],
   "bodyFont": "lato",
   "displayFont": "dmSerifDisplay",
-  "displayFontColor": "#facc15"
+  "displayFontColor": "#facc15",
+  "TextPosition": "Top"
 }

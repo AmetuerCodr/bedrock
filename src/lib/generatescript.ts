@@ -147,6 +147,11 @@ export async function generateScript(prompt: string) {
   10. "displayFontColor" (string)
   A single hexadecimal color value (e.g., '#FF6B35', '#E63946', '#6366F1', '#10B981', '#0891B2') representing the display/heading font color. Must be a vibrant, eye-catching accent color that creates strong visual contrast against the body font color. Avoid neutrals — pick something bold and distinctive.
   ---
+
+  11. "TextPosition" (string)
+     A single string — controlling the position of the text. Only three valid values: "Top", "Center", "Bottom".
+     __
+
   `,
     },
   });
@@ -162,7 +167,7 @@ export async function generateScript(prompt: string) {
   const parsed = VideoSchema.parse(JSON.parse(cleaned));
 
   // fetching script from data.json
-  // Bun.write("./public/data.json", JSON.stringify(parsed, null, 2));
+  Bun.write("./public/data.json", JSON.stringify(parsed, null, 2));
   // const fileRes = Bun.file("./public/data.json");
   // if (await fileRes.exists()) {
   //   const data = await fileRes.json(); // validates shape here

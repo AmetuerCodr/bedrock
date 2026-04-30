@@ -40,6 +40,7 @@ interface ClipProps {
   bodyFamily: string; // The clean font
   color: string;
   wordGroups: string[];
+  TextPosition: string;
 }
 
 /// animations
@@ -55,6 +56,7 @@ export const Clip: React.FC<ClipProps> = ({
   displayFamily,
   bodyFamily,
   animationType,
+  TextPosition,
   color,
 }) => {
   const frame = useCurrentFrame();
@@ -92,10 +94,24 @@ export const Clip: React.FC<ClipProps> = ({
   // Split the chunk of text into an array of words
   const words = text.split(" ");
 
+  function parseTextPosition(position: string): string {
+    switch (position.toLowerCase()) {
+      case "top":
+        return "start";
+      case "center":
+        return "center";
+      case "bottom":
+        return "end";
+      default:
+        return "center";
+    }
+  }
+
   return (
     <AbsoluteFill
       style={{
-        justifyContent: "center",
+        justifyContent: parseTextPosition(TextPosition),
+        marginTop: "1.3em",
         alignItems: "center",
         backgroundColor: "#000",
       }}
@@ -204,6 +220,7 @@ export const Video: React.FC<VideoData> = ({
   bodyFont,
   displayFont,
   displayFontColor,
+  TextPosition,
 }) => {
   const [bodyFamily, setBodyFamily] = useState("sans-serif");
   const [displayFamily, setDisplayFamily] = useState("serif");
@@ -231,6 +248,7 @@ export const Video: React.FC<VideoData> = ({
               wordGroups={wordGroups}
               text={text}
               animationType={animationType[i]}
+              TextPosition={TextPosition}
               // Pass the sub-array of booleans for this specific word group
 
               // color={
