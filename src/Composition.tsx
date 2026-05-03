@@ -5,6 +5,7 @@ import {
   useCurrentFrame,
   Easing,
   useVideoConfig,
+  Img,
 } from "remotion";
 import { getAvailableFonts } from "@remotion/google-fonts";
 import React from "react";
@@ -12,6 +13,7 @@ import { useState, useEffect } from "react";
 import { VideoData } from "./lib/schema.ts";
 import { shearSnap } from "./lib/animations/shearsnap.ts";
 import { letterDrift } from "./lib/animations/letterdrift.ts";
+import { moveTextAnimation } from "./lib/animations/movetext.ts";
 
 let animationStyle;
 // Dynamic font loader
@@ -40,6 +42,7 @@ interface ClipProps {
   bodyFamily: string; // The clean font
   color: string;
   wordGroups: string[];
+  TextPosition: string;
 }
 
 /// animations
@@ -55,6 +58,7 @@ export const Clip: React.FC<ClipProps> = ({
   displayFamily,
   bodyFamily,
   animationType,
+  TextPosition,
   color,
 }) => {
   const frame = useCurrentFrame();
@@ -78,6 +82,7 @@ export const Clip: React.FC<ClipProps> = ({
     { easing: easeOut, extrapolateRight: "clamp" },
   );
 
+
   const opacity = interpolate(frame, [0, 15], [0, 1], {
     easing: easeOut,
     extrapolateRight: "clamp",
@@ -92,105 +97,132 @@ export const Clip: React.FC<ClipProps> = ({
   // Split the chunk of text into an array of words
   const words = text.split(" ");
 
+  function parseTextPosition(position: string): string {
+    switch (position.toLowerCase()) {
+      case "top":
+        return "start";
+      case "center":
+        return "center";
+      case "bottom":
+        return "end";
+      default:
+        return "center";
+    }
+  }
+
+  const imgSrc =
+    "https://i.pinimg.com/1200x/fa/84/01/fa8401264e9fea8c760a46afe7e180af.jpg";
   return (
-    <AbsoluteFill
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#000",
-      }}
-      
-    >
-      {/* The Wrapper handles the animation and layout so the words move together */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "25px", // Acts as your "space" between words. Adjust as needed!
-          fontSize: 100,
-          margin: 0,
-        }}
-      >
-        {/* Map over the words and style them individually based on the fontBools array */}
-        {words.map((word, index) => {
-          // Safety check in case the LLM messes up the array length
+    <>
+      <AbsoluteFill>
+        <Img
+          style={{
+            width: "100%",
+          }}
+          src={imgSrc}
+        />
 
-          // console.log(wordGroups);
-          const isDisplay = fontBools[index] ?? false;
-          const a = animationType[index];
+        <AbsoluteFill
+          style={{
+            justifyContent: parseTextPosition(TextPosition),
+            // marginTop: "1.3em",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          {/* The Wrapper handles the animation and layout so the words move together */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              // transform: translateX(moveTextAnimation()),
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "25px", // Acts as your "space" between words. Adjust as needed!
+              fontSize: 100,
+              margin: 0,
+            }}
+          >
+            {/* Map over the words and style them individually based on the fontBools array */}
+            {words.map((word, index) => {
+              // Safety check in case the LLM messes up the array length
 
-          const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
-          const { skewX, translateX, blur } = shearSnap(frame, fps, index, {
-            delayPerWord: 8,
-            damping: 26,
-            stiffness: 70,
-          });
+              // console.log(wordGroups);
+              const isDisplay = fontBools[index] ?? false;
+              const a = animationType[index];
 
-          // fade && letter drift  && shearSnap
+              const { x, y, rotate, opacity } = letterDrift(frame, fps, index);
+              const { skewX, translateX, blur } = shearSnap(frame, fps, index, {
+                delayPerWord: 8,
+                damping: 26,
+                stiffness: 70,
+              });
 
-          const letterDriftStyle = {
-            transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
-            opacity: opacity,
-          };
+              // fade && letter drift  && shearSnap
 
-          const shearSnapStyle = {
-            transform: `skewX(${skewX}deg) translateX(${translateX}px)`,
-            filter: `blur(${blur}px)`,
-          };
+              const letterDriftStyle = {
+                transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+                opacity: opacity,
+              };
 
-          const fadeStyle = {
-            transform: translate,
-            opacity: opacity,
-          };
+              const shearSnapStyle = {
+                transform: `skewX(${skewX}deg) translateX(${translateX}px)`,
+                filter: `blur(${blur}px)`,
+              };
 
-          function playAnimation(animation: string): void {
-            switch (animation) {
-              case "letterDrift":
-                animationStyle = letterDriftStyle;
+              const fadeStyle = {
+                transform: translate,
+                opacity: opacity,
+              };
 
-                console.log(
-                  `animation type: ${animationType[index]} at index ${index}`,
-                );
+              function playAnimation(animation: string): void {
+                switch (animation) {
+                  case "letterDrift":
+                    animationStyle = letterDriftStyle;
 
-                break;
-              case "shearSnap":
-                animationStyle = shearSnapStyle;
+                    console.log(
+                      `animation type: ${animationType[index]} at index ${index}`,
+                    );
 
-                console.log(
-                  `animation type: ${animationType[index]} at index ${index}`,
-                );
-                break;
-              case "Fade":
-                animationStyle = fadeStyle;
+                    break;
+                  case "shearSnap":
+                    animationStyle = shearSnapStyle;
 
-                console.log(
-                  `animation type: ${animationType[index]} at index ${index}`,
-                );
-                break;
-            }
-          }
+                    console.log(
+                      `animation type: ${animationType[index]} at index ${index}`,
+                    );
+                    break;
+                  case "Fade":
+                    animationStyle = fadeStyle;
 
-          playAnimation(a);
+                    console.log(
+                      `animation type: ${animationType[index]} at index ${index}`,
+                    );
+                    break;
+                }
+              }
 
-          return (
-            <span
-              key={index}
-              style={{
-                ...animationStyle,
-                color: isDisplay ? color : "#fff",
-                fontFamily: isDisplay ? displayFamily : bodyFamily,
-                textTransform: isDisplay ? "capitalize" : undefined,
-                fontWeight: isDisplay ? 700 : 100,
-              }}
-            >
-              {word}
-            </span>
-          );
-        })}
-      </div>
-    </AbsoluteFill>
+              playAnimation(a);
+
+              return (
+                <span
+                  key={index}
+                  style={{
+                    ...animationStyle,
+                    color: isDisplay ? color : "#fff",
+                    fontFamily: isDisplay ? displayFamily : bodyFamily,
+                    textTransform: isDisplay ? "capitalize" : undefined,
+                    fontWeight: isDisplay ? 700 : 100,
+                  }}
+                >
+                  {word}
+                </span>
+              );
+            })}
+          </div>
+        </AbsoluteFill>
+      </AbsoluteFill>
+    </>
   );
 };
 
@@ -205,6 +237,7 @@ export const Video: React.FC<VideoData> = ({
   bodyFont,
   displayFont,
   displayFontColor,
+  TextPosition,
 }) => {
   const [bodyFamily, setBodyFamily] = useState("sans-serif");
   const [displayFamily, setDisplayFamily] = useState("serif");
@@ -232,6 +265,7 @@ export const Video: React.FC<VideoData> = ({
               wordGroups={wordGroups}
               text={text}
               animationType={animationType[i]}
+              TextPosition={TextPosition}
               // Pass the sub-array of booleans for this specific word group
 
               // color={

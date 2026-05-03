@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const FadeDirection = z.enum(["top", "bottom", "left", "right"]);
 export const Animation = z.enum(["Fade", "letterDrift", "shearSnap"]);
+export const TextPosition = z.enum(["Top", "Center", "Bottom"]);
 
 export const VideoSchema = z.object({
   script: z.string(),
@@ -15,6 +16,7 @@ export const VideoSchema = z.object({
   bodyFont: z.string(),
   displayFont: z.string(),
   displayFontColor: z.string(),
+  TextPosition: TextPosition,
 });
 
 export type VideoData = z.infer<typeof VideoSchema>;
