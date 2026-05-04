@@ -1,4 +1,4 @@
-import { interpolate } from "remotion";
+import { interpolate, spring } from "remotion";
 export function moveTextAnimation(
   frame: number,
   currentX: number,
