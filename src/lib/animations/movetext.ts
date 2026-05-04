@@ -1,5 +1,13 @@
 import { interpolate } from "remotion";
-export function moveTextAnimation(frame: number, currentX: number) {
+export function moveTextAnimation(
+  frame: number,
+  currentX: number,
+  currentY: number,
+) {
   const x = interpolate(frame, [0, 30], [currentX, currentX + 20]);
-  return x;
+  const y = interpolate(frame, [0, 30], [currentY, currentY + 20]);
+  return {
+    x: x,
+    y: y,
+  };
 }
