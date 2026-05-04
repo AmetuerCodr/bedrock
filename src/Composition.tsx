@@ -82,7 +82,6 @@ export const Clip: React.FC<ClipProps> = ({
     { easing: easeOut, extrapolateRight: "clamp" },
   );
 
-
   const opacity = interpolate(frame, [0, 15], [0, 1], {
     easing: easeOut,
     extrapolateRight: "clamp",
@@ -249,6 +248,10 @@ export const Video: React.FC<VideoData> = ({
 
   let fromFrame = 0;
 
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const move = moveTextAnimation(frame, fps, 300);
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
       {wordGroups.map((text, i) => {
