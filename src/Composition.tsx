@@ -111,25 +111,35 @@ export const Clip: React.FC<ClipProps> = ({
 
   const imgSrc =
     "https://i.pinimg.com/1200x/fa/84/01/fa8401264e9fea8c760a46afe7e180af.jpg";
+  const { move } = moveTextAnimation(frame, fps, 200, 7);
+
   return (
     <>
-      <AbsoluteFill>
-        <Img
+      {/*<AbsoluteFill>*/}
+      {/*<Img
           style={{
             width: "100%",
           }}
           src={imgSrc}
-        />
+        />*/}
 
-        <AbsoluteFill
+      <AbsoluteFill
+        style={{
+          justifyContent: parseTextPosition(TextPosition),
+          // marginTop: "1.3em",
+          alignItems: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        }}
+      >
+        {/* The Wrapper handles the animation and layout so the words move together */}
+
+        <div
           style={{
-            justifyContent: parseTextPosition(TextPosition),
-            // marginTop: "1.3em",
-            alignItems: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            position: "absolute",
+            // backgroundColor: 'greenyellow',
+            top: `${move}px`,
           }}
         >
-          {/* The Wrapper handles the animation and layout so the words move together */}
           <div
             style={{
               display: "flex",
@@ -219,8 +229,9 @@ export const Clip: React.FC<ClipProps> = ({
               );
             })}
           </div>
-        </AbsoluteFill>
+        </div>
       </AbsoluteFill>
+      {/*</AbsoluteFill>*/}
     </>
   );
 };
@@ -247,11 +258,9 @@ export const Video: React.FC<VideoData> = ({
   }, [bodyFont, displayFont]);
 
   let fromFrame = 0;
-
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const move = moveTextAnimation(frame, fps, 300);
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
       {wordGroups.map((text, i) => {
@@ -281,6 +290,7 @@ export const Video: React.FC<VideoData> = ({
               bodyFamily={bodyFamily}
             />
           </Sequence>
+          // {/*</div>*/}
         );
       })}
     </AbsoluteFill>
