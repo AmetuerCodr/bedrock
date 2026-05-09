@@ -1,12 +1,12 @@
 async function compiler() {
-  const proc = Bun.spawn(["src/lib/compiler"]);
+  const proc = Bun.spawn(["src/lib/compiler"], {
+    stdin: "pipe",
+  });
 
-  await proc.exited;
-
-  const usage = proc.resourceUsage();
-  console.log(`Max memory used: ${usage?.maxRSS} bytes`);
-  console.log(`CPU time (user): ${usage?.cpuTime.user} µs`);
-  console.log(`CPU time (system): ${usage?.cpuTime.system} µs`);
+  // proc.stdin.write("Shammah Womack");
+  // proc.stdin.end(); // Close stdin to allow the process to finish
+  const output = await new Response(proc.stdout).text();
+  console.log(output);
 }
 
 compiler();

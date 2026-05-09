@@ -30,6 +30,9 @@
     "@types/bun": "latest"
   },
   "scripts": {
+    "build:rust": "cd src/compiler && cargo build --release",
+    "copy:bin": "cp src/compiler/target/release/compiler src/lib/compiler",
+    "compile": "bun run build:rust && bun run copy:bin && bun run src/lib/lottiecompiler.ts",
     "dev": "remotionb studio",
     "build": "remotionb bundle",
     "upgrade": "remotionb upgrade",
