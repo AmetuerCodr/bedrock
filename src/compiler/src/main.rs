@@ -1,14 +1,19 @@
 use serde_json::{Result, Value};
 use std::collections::HashMap;
-use std::io;
 
-
-fn script_analyzer(){
+fn script_analyzer() {
     // analyzes script to find moments for visuals (lotties)
+    todo!()
+}
+
+fn animation_spec() {
+    // gemini designs each animation based on a constrained vocabulary syntax
+    todo!()
 }
 
 fn lottie_compiler() {
-  
+    // maps keywords to valid lottie json
+    todo!()
 }
 
 fn main() -> Result<()> {
