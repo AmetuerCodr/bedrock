@@ -2,11 +2,11 @@ use serde_json::{Result, Value};
 use std::collections::HashMap;
 use std::io;
 
-fn lottie_compiler() {}
+fn lottie_compiler() {
+    //
+}
 
 fn main() -> Result<()> {
-    // let mut map = HashMap::new();
-
     let data = r#"{
       "v": "5.5.7",
       "fr": 30,
