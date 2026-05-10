@@ -1,0 +1,3 @@
+# Ignore all Makefiles in the repo from language statistics
+Makefile linguist-vendored
+**/Makefile linguist-vendored
