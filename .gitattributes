@@ -1,3 +1,9 @@
-# Ignore all Makefiles in the repo from language statistics
+# Remove Makefiles from language stats
 Makefile linguist-vendored
 **/Makefile linguist-vendored
+
+# Ensure Bun's binary lockfile is treated as a lockfile/binary
+bun.lockb linguist-generated=true
+
+# Force all .ts files to be TypeScript (Bun sometimes uses different shebangs)
+*.ts linguist-language=TypeScript
