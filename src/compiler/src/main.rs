@@ -3,6 +3,27 @@ use std::collections::HashMap;
 
 fn script_analyzer() {
     // analyzes script to find moments for visuals (lotties)
+    // {
+    // use rust reqwest to fetch data.json file
+    // 
+    // use gemini api to analyze script to find moments that should be visuals
+    // 
+    // returns json only, no commentary
+    // 
+    // example: 
+    // 
+    // [
+    //   {
+    //     "index": 0,
+    //     "concept": "growth",
+    //     "mood": "energetic",
+    //     "metaphor": "expanding circle",
+    //     "duration": 24
+    //   }
+    // ]
+
+    // }
+
     todo!()
 }
 
