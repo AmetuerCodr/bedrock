@@ -1,4 +1,4 @@
-# Remotion video
+# Bedrock Video Engine
 
 <p align="center">
   <a href="https://github.com/remotion-dev/logo">
