@@ -2,8 +2,13 @@ use serde_json::{Result, Value};
 use std::collections::HashMap;
 use std::io;
 
+
+fn script_analyzer(){
+    // analyzes script to find moments for visuals (lotties)
+}
+
 fn lottie_compiler() {
-    //
+  
 }
 
 fn main() -> Result<()> {
