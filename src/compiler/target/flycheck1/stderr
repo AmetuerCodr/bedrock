@@ -1,12 +1,50 @@
-   0.014718708s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint: stale: changed "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs"
-   0.014735125s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:           (vs) "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/target/debug/.fingerprint/compiler-2b5318ead07b12a2/dep-bin-compiler"
-   0.014739833s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1778411494, nanos: 609857270 } < FileTime { seconds: 1778411503, nanos: 774818723 }
-   0.014840375s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint: fingerprint dirty for compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler)/Check { test: false }/TargetInner { name: "compiler", doc: true, ..: with_path("/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs", Edition2024) }
-   0.014854666s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/target/debug/.fingerprint/compiler-2b5318ead07b12a2/dep-bin-compiler", reference_mtime: FileTime { seconds: 1778411494, nanos: 609857270 }, stale: "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs", stale_mtime: FileTime { seconds: 1778411503, nanos: 774818723 } }))
-   0.017099708s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint: stale: changed "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs"
-   0.017104458s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:           (vs) "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/target/debug/.fingerprint/compiler-9d18469e0c0edbf7/dep-test-bin-compiler"
-   0.017107583s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1778411494, nanos: 609938811 } < FileTime { seconds: 1778411503, nanos: 774818723 }
-   0.017187875s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint: fingerprint dirty for compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler)/Check { test: true }/TargetInner { name: "compiler", doc: true, ..: with_path("/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs", Edition2024) }
-   0.017195458s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/target/debug/.fingerprint/compiler-9d18469e0c0edbf7/dep-test-bin-compiler", reference_mtime: FileTime { seconds: 1778411494, nanos: 609938811 }, stale: "/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs", stale_mtime: FileTime { seconds: 1778411503, nanos: 774818723 } }))
+   0.100445917s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint: fingerprint error for compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler)/Check { test: false }/TargetInner { name: "compiler", doc: true, ..: with_path("/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs", Edition2024) }
+   0.100472500s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/target/debug/.fingerprint/compiler-80929b8f33663da3/bin-compiler`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: cargo_util::paths::read_bytes
+   2: cargo_util::paths::read
+   3: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   4: cargo::core::compiler::fingerprint::prepare_target
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: std::rt::lang_start_internal
+  16: _main
+   0.118883750s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint: fingerprint error for compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler)/Check { test: true }/TargetInner { name: "compiler", doc: true, ..: with_path("/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/src/main.rs", Edition2024) }
+   0.118899542s  INFO prepare_target{force=false package_id=compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler) target="compiler"}: cargo::core::compiler::fingerprint:     err: failed to read `/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler/target/debug/.fingerprint/compiler-dfeabd71e5270066/test-bin-compiler`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: std::backtrace::Backtrace::create
+   1: cargo_util::paths::read_bytes
+   2: cargo_util::paths::read
+   3: cargo::core::compiler::fingerprint::_compare_old_fingerprint
+   4: cargo::core::compiler::fingerprint::prepare_target
+   5: cargo::core::compiler::compile
+   6: <cargo::core::compiler::build_runner::BuildRunner>::compile
+   7: cargo::ops::cargo_compile::compile_ws
+   8: cargo::ops::cargo_compile::compile_with_exec
+   9: cargo::ops::cargo_compile::compile
+  10: cargo::commands::check::exec
+  11: <cargo::cli::Exec>::exec
+  12: cargo::main
+  13: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()>
+  14: std::rt::lang_start::<()>::{closure#0}
+  15: std::rt::lang_start_internal
+  16: _main
     Checking compiler v0.1.0 (/Users/gadgetguy/bedrock-files/bedrock-video/src/compiler)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.21s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.25s
