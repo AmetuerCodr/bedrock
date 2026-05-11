@@ -3,20 +3,34 @@ use serde_json::{Result as serde_Result, Value as serde_Value};
 use std::env;
 use std::{collections::HashMap, fs};
 
-async fn script_analyzer() -> Result<(), Box<dyn std::error::Error>> {
-    // analyzes script to find moments for visuals (lotties)
+async fn gemini_prompt(
+    prompt: &str,
+    system_prompt: Option<&str>,
+) -> Result<(), Box<dyn std::error::Error>> {
     let api_key = env::var("GEMINI_API_KEY")?;
     let client = Gemini::new(api_key)?;
 
     let response = client
         .generate_content()
-        .with_system_prompt("You reply only in Rhymes")
-        .with_user_message("Explain quantum computing in one sentence.")
+        .with_system_prompt(system_prompt.unwrap_or(""))
+        .with_user_message(prompt)
         .execute()
         .await?;
 
     println!("{}", response.text());
+    println!("{}", std::any::type_name_of_val(&response.text()));
 
+    Ok(())
+}
+
+async fn script_analyzer() -> Result<(), Box<dyn std::error::Error>> {
+    // analyzes script to find moments for visuals (lotties)
+
+    gemini_prompt(
+        "explain how backpropogation works in less than 150 words",
+        None,
+    )
+    .await?;
     // let file_path = "../../public/data.json";
     // let contents = fs::read_to_string(file_path).expect("failed to read file");
 
