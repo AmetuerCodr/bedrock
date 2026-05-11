@@ -38,7 +38,10 @@
     "upgrade": "remotionb upgrade",
     "generate": "bun src/lib/generatescript.ts",
     "render": "bun render.ts",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "test:rust": "cd src/compiler && cargo test",
+    "test:ts": "bun test",
+    "test": "bun run test:rust && bun run test:ts"
   },
   "sideEffects": [
     "*.css"

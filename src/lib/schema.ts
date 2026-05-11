@@ -20,3 +20,26 @@ export const VideoSchema = z.object({
 });
 
 export type VideoData = z.infer<typeof VideoSchema>;
+
+export const MoodEnum = z.enum([
+  "energetic",
+  "calm",
+  "tense",
+  "hopeful",
+  "somber",
+  "playful",
+  "ominous",
+  "triumphant",
+]);
+
+export const VisualMomentSchema = z.object({
+  index: z.number().int().nonnegative(),
+  concept: z.string().min(1),
+  mood: MoodEnum,
+  metaphor: z.string().min(1),
+  duration: z.number().int().min(15).max(90),
+});
+
+export const VisualMomentArraySchema = z.array(VisualMomentSchema);
+
+export type VisualMoment = z.infer<typeof VisualMomentSchema>;
