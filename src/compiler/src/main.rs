@@ -1,22 +1,30 @@
-use serde_json::{Result, Value};
+use gemini_rust::Gemini;
+use serde_json::{Result as serde_Result, Value as serde_Value};
+use std::env;
+use std::{collections::HashMap, fs};
 
-use std::collections::HashMap;
-
-async fn script_analyzer() -> std::result::Result<(), Box<dyn std::error::Error>> {
+async fn script_analyzer() -> Result<(), Box<dyn std::error::Error>> {
     // analyzes script to find moments for visuals (lotties)
     // {
-    // use rust reqwest to fetch data.json file
-    let body = reqwest::get("https://www.rust-lang.org")
-        .await?
-        .text()
+
+    let api_key = env::var("GEMINI_API_KEY")?;
+    let client = Gemini::new(api_key)?;
+
+    let response = client
+        .generate_content()
+        .with_system_prompt("You reply only in Rhymes")
+        .with_user_message("Explain quantum computing in one sentence.")
+        .execute()
         .await?;
 
-    println!("body = {body:?}");
+    println!("{}", response.text());
+
+    // let file_path = "../../public/data.json";
+    // let contents = fs::read_to_string(file_path).expect("failed to read file");
+
+    // println!("contents {contents}");
+
     Ok(())
-
-
-
-
     //
     // use gemini api to analyze script to find moments that should be visuals
     //
@@ -48,9 +56,10 @@ fn lottie_compiler() {
     // maps keywords to valid lottie json
     todo!()
 }
+
 #[tokio::main]
-async fn main() -> Result<()> {
-    script_analyzer().await;
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    script_analyzer().await?;
     // let data = r#"{
     //   "v": "5.5.7",
     //   "fr": 30,
