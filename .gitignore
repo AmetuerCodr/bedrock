@@ -2,7 +2,7 @@ node_modules
 dist
 .DS_Store
 .env
-src/compiler/target/debug
+src/compiler/target/
 build/
 *.tsbuildinfo
 bun.lockb
