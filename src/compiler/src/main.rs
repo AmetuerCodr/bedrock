@@ -5,8 +5,6 @@ use std::{collections::HashMap, fs};
 
 async fn script_analyzer() -> Result<(), Box<dyn std::error::Error>> {
     // analyzes script to find moments for visuals (lotties)
-    // {
-
     let api_key = env::var("GEMINI_API_KEY")?;
     let client = Gemini::new(api_key)?;
 
@@ -41,10 +39,6 @@ async fn script_analyzer() -> Result<(), Box<dyn std::error::Error>> {
     //     "duration": 24
     //   }
     // ]
-
-    // }
-
-    // todo!()
 }
 
 fn animation_spec() {
