@@ -54,6 +54,7 @@ fn lottie_compiler() {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     script_analyzer().await?;
+    Ok(())
     // let data = r#"{
     //   "v": "5.5.7",
     //   "fr": 30,
@@ -79,7 +80,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let my_map: HashMap<String, serde_json::Value> = serde_json::from_str(data)?;
 
     // println!("{:?}", my_map.get("layers").expect("layers does not exist"));
-    Ok(())
     // map.insert("name", "John");
     // map.insert("city", "New York");
 
