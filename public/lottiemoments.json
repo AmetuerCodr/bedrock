@@ -1,0 +1,30 @@
+[
+  {
+    "index": 6,
+    "concept": "friction, interaction",
+    "mood": "calm",
+    "metaphor": "gentle opposing waves",
+    "duration": 45
+  },
+  {
+    "index": 17,
+    "concept": "decision, path",
+    "mood": "hopeful",
+    "metaphor": "branching pathways",
+    "duration": 60
+  },
+  {
+    "index": 24,
+    "concept": "action, empowerment",
+    "mood": "energetic",
+    "metaphor": "radiating energy from hands",
+    "duration": 50
+  },
+  {
+    "index": 29,
+    "concept": "journey, self-direction",
+    "mood": "triumphant",
+    "metaphor": "unfolding evolving map",
+    "duration": 75
+  }
+]
