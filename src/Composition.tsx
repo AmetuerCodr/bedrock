@@ -287,7 +287,6 @@ export const Video: React.FC<VideoData> = ({
               bodyFamily={bodyFamily}
             />
           </Sequence>
-          // {/*</div>*/}
         );
       })}
     </AbsoluteFill>
