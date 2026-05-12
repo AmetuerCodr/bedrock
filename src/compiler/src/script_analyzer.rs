@@ -57,10 +57,7 @@ pub struct VisualMoment {
     pub duration: u32,
 }
 
-fn validate_moments(
-    moments: &mut Vec<VisualMoment>,
-    n_word_groups: usize,
-) -> Result<(), String> {
+fn validate_moments(moments: &mut Vec<VisualMoment>, n_word_groups: usize) -> Result<(), String> {
     if moments.is_empty() {
         return Err("gemini returned zero visual moments".to_string());
     }
@@ -102,8 +99,8 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         return Err("empty input on stdin; expected data.json contents".into());
     }
 
-    let input: ScriptInput = serde_json::from_str(raw_input)
-        .map_err(|e| format!("stdin is not valid JSON: {e}"))?;
+    let input: ScriptInput =
+        serde_json::from_str(raw_input).map_err(|e| format!("stdin is not valid JSON: {e}"))?;
 
     if input.word_groups.is_empty() {
         return Err("input wordGroups is empty".into());
