@@ -5,7 +5,6 @@ import {
   useCurrentFrame,
   Easing,
   useVideoConfig,
-  Img,
 } from "remotion";
 import { getAvailableFonts } from "@remotion/google-fonts";
 import React from "react";
@@ -275,14 +274,10 @@ export const Video: React.FC<VideoData> = ({
               text={text}
               animationType={animationType[i]}
               TextPosition={TextPosition}
-              // Pass the sub-array of booleans for this specific word group
-
-              // color={
               fontBools={DisplayFontBoolArray[i]}
               fadeDir={defaultTextVariant[i]}
               hasFade={fadeInTransitionBool[i]}
               color={displayFontColor}
-              // Pass BOTH fonts so the Clip component can alternate them
               displayFamily={displayFamily}
               bodyFamily={bodyFamily}
             />
