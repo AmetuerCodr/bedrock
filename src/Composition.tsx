@@ -257,8 +257,6 @@ export const Video: React.FC<VideoData> = ({
   }, [bodyFont, displayFont]);
 
   let fromFrame = 0;
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
