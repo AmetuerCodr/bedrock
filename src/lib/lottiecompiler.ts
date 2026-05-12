@@ -1,6 +1,5 @@
 import { resolve } from "node:path";
 import { VisualMomentArraySchema, type VisualMoment } from "./schema";
-import { appendFile } from "node:fs/promises";
 
 export async function runLottieCompiler(
   videoData: unknown,
