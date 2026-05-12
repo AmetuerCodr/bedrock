@@ -1,30 +1,37 @@
 [
   {
     "index": 6,
-    "concept": "friction, interaction",
+    "concept": "inner tension",
     "mood": "calm",
-    "metaphor": "gentle opposing waves",
-    "duration": 45
+    "metaphor": "subtle opposing forces",
+    "duration": 60
   },
   {
-    "index": 17,
-    "concept": "decision, path",
-    "mood": "hopeful",
-    "metaphor": "branching pathways",
+    "index": 13,
+    "concept": "grounding process",
+    "mood": "calm",
+    "metaphor": "evolving layers",
+    "duration": 75
+  },
+  {
+    "index": 18,
+    "concept": "core identity",
+    "mood": "triumphant",
+    "metaphor": "rhythmic expansion",
     "duration": 60
   },
   {
     "index": 24,
-    "concept": "action, empowerment",
+    "concept": "personal agency",
     "mood": "energetic",
-    "metaphor": "radiating energy from hands",
-    "duration": 50
+    "metaphor": "forging activity",
+    "duration": 60
   },
   {
-    "index": 29,
-    "concept": "journey, self-direction",
-    "mood": "triumphant",
-    "metaphor": "unfolding evolving map",
+    "index": 30,
+    "concept": "self creation",
+    "mood": "hopeful",
+    "metaphor": "evolving pathway",
     "duration": 75
   }
 ]
