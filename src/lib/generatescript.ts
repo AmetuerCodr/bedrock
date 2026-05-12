@@ -2,34 +2,11 @@ import { GoogleGenAI } from "@google/genai";
 import { parseArgs } from "util";
 import { VideoSchema } from "./schema";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 // Derive the JSON schema from your Zod schema — no manual sync needed
 const videoJsonSchema = zodToJsonSchema(VideoSchema);
 
-async function scriptToVoiceOver(text: string) {
-  console.log("program running");
-  const elevenlabsclient = new ElevenLabsClient({
-    apiKey: Bun.env.ELEVENLABS_KEY,
-  });
-  const id = Bun.randomUUIDv7();
-  const file = Bun.file(`${id}.mp3`);
-  const writer = file.writer();
-  const audio: ReadableStream = await elevenlabsclient.textToSpeech.convert(
-    "pqHfZKP75CvOlQylNhV4",
-    {
-      outputFormat: "mp3_44100_128",
-      text: text,
-      modelId: "eleven_multilingual_v2",
-    },
-  );
 
-  if (audio) {
-    const buf = await new Response(audio as ReadableStream).arrayBuffer();
-    writer.write(buf);
-    console.log("voiceover written to disk!");
-  }
-}
 
 export async function generateScript(prompt: string) {
   const ai = new GoogleGenAI({ apiKey: Bun.env.GEMINI_API_KEY });
