@@ -4,6 +4,19 @@ import { Video } from "./Composition";
 import { VideoSchema, VideoData } from "./lib/schema";
 
 export const RemotionRoot: React.FC = () => {
+  interface VideoMetaData {
+    fps: number;
+    durationInFrames: number;
+    width: number;
+    height: number;
+  }
+  const tempVideoData: VideoMetaData = {
+    fps: 30, // must always be 30 fps for animation_spec.rs to work properly
+    durationInFrames: 45,
+    width: 1080,
+    height: 1080,
+  };
+
   const func: CalculateMetadataFunction<VideoData> = async () => {
     const res = await fetch(staticFile("data.json"));
     if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
@@ -34,10 +47,10 @@ export const RemotionRoot: React.FC = () => {
         bodyFont: "inter",
         displayFont: "montserrat",
       }}
-      durationInFrames={45}
-      fps={30}
-      width={1080}
-      height={1080}
+      durationInFrames={tempVideoData.durationInFrames}
+      fps={tempVideoData.fps}
+      width={tempVideoData.width}
+      height={tempVideoData.height}
     />
   );
 };

@@ -53,8 +53,7 @@ export const Clip: React.FC<ClipProps> = ({
   text,
   fontBools,
   fadeDir,
-  hasFade,
-  wordGroups,
+
   displayFamily,
   bodyFamily,
   animationType,

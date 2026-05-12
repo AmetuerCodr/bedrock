@@ -5,7 +5,7 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 // Derive the JSON schema from your Zod schema — no manual sync needed
-const videoJsonSchema = zodToJsonSchema(VideoSchema as any);
+const videoJsonSchema = zodToJsonSchema(VideoSchema);
 
 async function scriptToVoiceOver(text: string) {
   console.log("program running");
