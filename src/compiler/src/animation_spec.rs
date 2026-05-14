@@ -78,6 +78,15 @@ fn validate_specs(
         ));
     }
     for s in specs.iter_mut() {
+        // Normalize common Gemini variants before validation.
+        s.shape = match s.shape.as_str() {
+            "lines" | "line_segment" => "line".into(),
+            "ellipse" | "oval"       => "circle".into(),
+            "rectangle" | "rect"     => "square".into(),
+            "bar"                    => "bars".into(),
+            "dot" | "circle_dots"    => "dots".into(),
+            other                    => other.into(),
+        };
         if !VALID_SHAPES.contains(&s.shape.as_str()) {
             return Err(format!("unknown shape: {:?}", s.shape));
         }
@@ -106,16 +115,9 @@ fn validate_specs(
     Ok(())
 }
 
-pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let mut raw_input = String::new();
-    io::stdin().read_to_string(&mut raw_input)?;
-    let raw_input = raw_input.trim();
-    if raw_input.is_empty() {
-        return Err("empty input on stdin; expected JSON array of visual moments".into());
-    }
-
-    let moments: Vec<VisualMoment> = serde_json::from_str(raw_input)
-        .map_err(|e| format!("stdin is not a valid moments JSON array: {e}"))?;
+/// Pure design logic: calls Gemini and validates the result.
+/// Called by both run() and run_pipeline() in lottie_compiler.
+pub async fn design(moments: &[VisualMoment]) -> Result<Vec<AnimationSpec>, Box<dyn std::error::Error>> {
     if moments.is_empty() {
         return Err("input moments array is empty".into());
     }
@@ -130,6 +132,22 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     validate_specs(&mut specs, moments.len())?;
 
     eprintln!("designed {} animation specs", specs.len());
+    Ok(specs)
+}
+
+/// Stage 2 standalone: reads Vec<VisualMoment> from stdin, writes Vec<AnimationSpec> to stdout.
+pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    let mut raw_input = String::new();
+    io::stdin().read_to_string(&mut raw_input)?;
+    let raw_input = raw_input.trim();
+    if raw_input.is_empty() {
+        return Err("empty input on stdin; expected JSON array of visual moments".into());
+    }
+
+    let moments: Vec<VisualMoment> = serde_json::from_str(raw_input)
+        .map_err(|e| format!("stdin is not a valid moments JSON array: {e}"))?;
+
+    let specs = design(&moments).await?;
     println!("{}", serde_json::to_string(&specs)?);
     Ok(())
 }
@@ -211,6 +229,23 @@ mod tests {
         )];
         let err = validate_specs(&mut specs, 1).unwrap_err();
         assert!(err.contains("unknown shape"));
+    }
+
+    #[test]
+    fn validate_normalizes_gemini_shape_aliases() {
+        // Gemini sometimes returns plural/full-word variants — these must be coerced.
+        let aliases = [
+            ("lines", "line"),
+            ("ellipse", "circle"),
+            ("rectangle", "square"),
+            ("bar", "bars"),
+            ("dot", "dots"),
+        ];
+        for (alias, expected) in aliases {
+            let mut specs = vec![spec(alias, "expand", "#ff5577", "large", "ease_out", 30)];
+            validate_specs(&mut specs, 1).expect(alias);
+            assert_eq!(specs[0].shape, expected, "alias '{alias}' should normalize to '{expected}'");
+        }
     }
 
     #[test]

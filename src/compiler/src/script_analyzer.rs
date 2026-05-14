@@ -41,11 +41,12 @@ const VALID_MOODS: &[&str] = &[
 const DURATION_MIN: u32 = 15;
 const DURATION_MAX: u32 = 90;
 
+/// Input shape for data.json. Public so run_pipeline() in lottie_compiler can deserialize it.
 #[derive(Deserialize)]
-struct ScriptInput {
-    script: String,
+pub struct ScriptInput {
+    pub script: String,
     #[serde(rename = "wordGroups")]
-    word_groups: Vec<String>,
+    pub word_groups: Vec<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -91,18 +92,11 @@ fn validate_moments(moments: &mut Vec<VisualMoment>, n_word_groups: usize) -> Re
     Ok(())
 }
 
-pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let mut raw_input = String::new();
-    io::stdin().read_to_string(&mut raw_input)?;
-    let raw_input = raw_input.trim();
-    if raw_input.is_empty() {
-        return Err("empty input on stdin; expected data.json contents".into());
-    }
-
-    let input: ScriptInput =
-        serde_json::from_str(raw_input).map_err(|e| format!("stdin is not valid JSON: {e}"))?;
-
-    if input.word_groups.is_empty() {
+/// Pure analysis logic: calls Gemini and validates the result.
+/// Called by both run() and run_pipeline() in lottie_compiler.
+pub async fn analyze(input: ScriptInput) -> Result<Vec<VisualMoment>, Box<dyn std::error::Error>> {
+    let n_word_groups = input.word_groups.len();
+    if n_word_groups == 0 {
         return Err("input wordGroups is empty".into());
     }
 
@@ -117,13 +111,29 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut moments: Vec<VisualMoment> = serde_json::from_str(cleaned)
         .map_err(|e| format!("gemini returned invalid JSON: {e}\n---\n{cleaned}"))?;
 
-    validate_moments(&mut moments, input.word_groups.len())?;
+    validate_moments(&mut moments, n_word_groups)?;
 
     eprintln!(
         "analyzed {} wordGroups, produced {} moments",
-        input.word_groups.len(),
+        n_word_groups,
         moments.len()
     );
+    Ok(moments)
+}
+
+/// Stage 1 standalone: reads data.json from stdin, writes Vec<VisualMoment> to stdout.
+pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    let mut raw_input = String::new();
+    io::stdin().read_to_string(&mut raw_input)?;
+    let raw_input = raw_input.trim();
+    if raw_input.is_empty() {
+        return Err("empty input on stdin; expected data.json contents".into());
+    }
+
+    let input: ScriptInput =
+        serde_json::from_str(raw_input).map_err(|e| format!("stdin is not valid JSON: {e}"))?;
+
+    let moments = analyze(input).await?;
     println!("{}", serde_json::to_string(&moments)?);
     Ok(())
 }
