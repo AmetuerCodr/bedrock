@@ -81,6 +81,7 @@ fn validate_moments(moments: &mut Vec<VisualMoment>, n_word_groups: usize) -> Re
         prev = Some(m.index);
         if !VALID_MOODS.contains(&m.mood.as_str()) {
             return Err(format!("unknown mood: {:?}", m.mood));
+            // unrecoverble erorr (possible fix in the future?)
         }
         if m.duration < DURATION_MIN {
             m.duration = DURATION_MIN;
