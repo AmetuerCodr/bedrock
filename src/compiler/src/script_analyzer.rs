@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use std::io::{self, Read};
 
 const SYSTEM_PROMPT: &str = r#"You are a visual-moments analyzer for a motion-graphics pipeline.
-
 INPUT: a JSON object with two fields:
   - "script": the full narration as a string
   - "wordGroups": an ordered array of short phrases the narration is broken into
