@@ -1,37 +1,30 @@
 [
   {
     "index": 6,
-    "concept": "inner tension",
-    "mood": "calm",
-    "metaphor": "subtle opposing forces",
+    "concept": "friction",
+    "mood": "tense",
+    "metaphor": "grinding gears",
     "duration": 60
   },
   {
-    "index": 13,
-    "concept": "grounding process",
+    "index": 14,
+    "concept": "persistence",
     "mood": "calm",
-    "metaphor": "evolving layers",
-    "duration": 75
-  },
-  {
-    "index": 18,
-    "concept": "core identity",
-    "mood": "triumphant",
-    "metaphor": "rhythmic expansion",
+    "metaphor": "layered growth",
     "duration": 60
   },
   {
     "index": 24,
-    "concept": "personal agency",
+    "concept": "agency",
     "mood": "energetic",
-    "metaphor": "forging activity",
-    "duration": 60
+    "metaphor": "forming hands",
+    "duration": 45
   },
   {
-    "index": 30,
-    "concept": "self creation",
+    "index": 29,
+    "concept": "journey",
     "mood": "hopeful",
-    "metaphor": "evolving pathway",
+    "metaphor": "unfolding path",
     "duration": 75
   }
 ]

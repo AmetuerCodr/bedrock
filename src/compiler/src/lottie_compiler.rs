@@ -26,7 +26,7 @@
 use crate::animation_spec::AnimationSpec;
 use crate::script_analyzer::ScriptInput;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 use std::io::{self, Read};
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -113,18 +113,31 @@ pub async fn run_pipeline() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Stage 1 — script_analyzer: data.json → Vec<VisualMoment>
-    let input: ScriptInput = serde_json::from_str(raw)
-        .map_err(|e| format!("stdin is not valid data.json: {e}"))?;
+    let input: ScriptInput =
+        serde_json::from_str(raw).map_err(|e| format!("stdin is not valid data.json: {e}"))?;
+    eprintln!(
+        "stage 1/3: analyzing script ({} word groups)…",
+        input.word_groups.len()
+    );
     let moments = crate::script_analyzer::analyze(input).await?;
 
     // Stage 2 — animation_spec: Vec<VisualMoment> → Vec<AnimationSpec>
+    eprintln!(
+        "stage 2/3: designing animation specs for {} moments…",
+        moments.len()
+    );
     let specs = crate::animation_spec::design(&moments).await?;
 
     // Stage 3 — lottie_compiler: Vec<AnimationSpec> → Vec<LottieAnimation>
+    eprintln!("stage 3/3: compiling {} specs to lottie…", specs.len());
     let animations = compile(&specs)?;
     eprintln!("compiled {} lottie animations", animations.len());
 
     println!("{}", serde_json::to_string(&animations)?);
+    std::fs::write(
+        "../../public/lottie.json",
+        serde_json::to_string(&animations)?,
+    )?;
     Ok(())
 }
 
@@ -132,7 +145,9 @@ pub async fn run_pipeline() -> Result<(), Box<dyn std::error::Error>> {
 /// animations without any I/O.
 ///
 /// Each spec maps to exactly one [`LottieAnimation`] with one shape layer.
-pub fn compile(specs: &[AnimationSpec]) -> Result<Vec<LottieAnimation>, Box<dyn std::error::Error>> {
+pub fn compile(
+    specs: &[AnimationSpec],
+) -> Result<Vec<LottieAnimation>, Box<dyn std::error::Error>> {
     let animations: Vec<LottieAnimation> = specs
         .iter()
         .enumerate()
@@ -217,14 +232,14 @@ fn build_shapes(spec: &AnimationSpec) -> Vec<Value> {
     let px = size_px(&spec.size);
 
     match spec.shape.as_str() {
-        "circle"   => vec![build_ellipse(px), build_fill(color)],
-        "square"   => vec![build_rect(px, px, 0.0), build_fill(color)],
+        "circle" => vec![build_ellipse(px), build_fill(color)],
+        "square" => vec![build_rect(px, px, 0.0), build_fill(color)],
         "triangle" => vec![build_triangle_path(px), build_fill(color)],
-        "line"     => vec![build_line_path(px), build_stroke(color, 4.0)],
-        "arc"      => vec![build_arc_path(px), build_stroke(color, 4.0)],
-        "bars"     => build_bars(color, px),
-        "dots"     => build_dots(color, px),
-        _          => vec![build_ellipse(px), build_fill(color)], // safe default
+        "line" => vec![build_line_path(px), build_stroke(color, 4.0)],
+        "arc" => vec![build_arc_path(px), build_stroke(color, 4.0)],
+        "bars" => build_bars(color, px),
+        "dots" => build_dots(color, px),
+        _ => vec![build_ellipse(px), build_fill(color)], // safe default
     }
 }
 
@@ -425,7 +440,7 @@ fn build_transform(motion: &str, easing: &str, op: u32) -> Value {
                     kf_end(dur, json!([100.0, 100.0, 100.0]))
                 ]}
             })
-        },
+        }
 
         // Translate from y=280 → y=220 (drifts upward).
         "drift" => json!({
@@ -467,7 +482,7 @@ fn build_transform(motion: &str, easing: &str, op: u32) -> Value {
                 "a": { "a": 0, "k": [0.0, 0.0, 0.0] },
                 "s": { "a": 0, "k": [100.0, 100.0, 100.0] }
             })
-        },
+        }
 
         // Opacity 0 → 100 (fade-in).
         "appear" => json!({
@@ -517,21 +532,21 @@ fn kf_end(t: f64, s: Value) -> Value {
 /// These values map approximately to CSS `cubic-bezier(p1x, p1y, p2x, p2y)`.
 fn easing_bezier(easing: &str) -> (Value, Value) {
     match easing {
-        "ease_in"     => (json!({"x":[0.42],"y":[0.0]}), json!({"x":[1.0], "y":[1.0]})),
-        "ease_out"    => (json!({"x":[0.0], "y":[0.0]}), json!({"x":[0.42],"y":[1.0]})),
+        "ease_in" => (json!({"x":[0.42],"y":[0.0]}), json!({"x":[1.0], "y":[1.0]})),
+        "ease_out" => (json!({"x":[0.0], "y":[0.0]}), json!({"x":[0.42],"y":[1.0]})),
         "ease_in_out" => (json!({"x":[0.42],"y":[0.0]}), json!({"x":[0.42],"y":[1.0]})),
         // Spring: fast exit, overshoots slightly (y > 1), then settles.
-        "spring"      => (json!({"x":[0.5], "y":[0.0]}), json!({"x":[0.1], "y":[1.5]})),
-        _             => (json!({"x":[0.0], "y":[0.0]}), json!({"x":[1.0], "y":[1.0]})), // linear
+        "spring" => (json!({"x":[0.5], "y":[0.0]}), json!({"x":[0.1], "y":[1.5]})),
+        _ => (json!({"x":[0.0], "y":[0.0]}), json!({"x":[1.0], "y":[1.0]})), // linear
     }
 }
 
 /// Map a size name to a pixel dimension for the shape geometry.
 fn size_px(size: &str) -> f64 {
     match size {
-        "small"  => 80.0,
-        "large"  => 250.0,
-        _        => 150.0, // "medium" and any unexpected value
+        "small" => 80.0,
+        "large" => 250.0,
+        _ => 150.0, // "medium" and any unexpected value
     }
 }
 
@@ -557,7 +572,14 @@ mod tests {
     use crate::animation_spec::AnimationSpec;
 
     /// Helper to build a minimal AnimationSpec for test cases.
-    fn spec(shape: &str, motion: &str, color: &str, size: &str, easing: &str, duration: u32) -> AnimationSpec {
+    fn spec(
+        shape: &str,
+        motion: &str,
+        color: &str,
+        size: &str,
+        easing: &str,
+        duration: u32,
+    ) -> AnimationSpec {
         AnimationSpec {
             shape: shape.into(),
             motion: motion.into(),
@@ -635,7 +657,10 @@ mod tests {
     fn validate_rejects_empty_layers() {
         let anim = minimal_anim(0, 30, CANVAS_W, CANVAS_H, vec![]);
         let err = validate_animations(&[anim]).unwrap_err();
-        assert!(err.contains("layers"), "error should mention 'layers': {err}");
+        assert!(
+            err.contains("layers"),
+            "error should mention 'layers': {err}"
+        );
     }
 
     #[test]
@@ -654,10 +679,13 @@ mod tests {
 
     #[test]
     fn each_shape_variant_produces_non_empty_layers() {
-        let shapes = ["circle", "square", "triangle", "line", "arc", "bars", "dots"];
+        let shapes = [
+            "circle", "square", "triangle", "line", "arc", "bars", "dots",
+        ];
         for shape in shapes {
             let specs = vec![spec(shape, "expand", "#ff5577", "medium", "linear", 30)];
-            let result = compile(&specs).unwrap_or_else(|e| panic!("compile failed for shape {shape}: {e}"));
+            let result =
+                compile(&specs).unwrap_or_else(|e| panic!("compile failed for shape {shape}: {e}"));
             assert!(
                 !result[0].layers.is_empty(),
                 "shape '{shape}' produced empty layers"
@@ -668,7 +696,9 @@ mod tests {
     #[test]
     fn each_shape_variant_produces_at_least_two_shape_items() {
         // Every shape type includes at least a geometry item + a paint item (fill or stroke).
-        let shapes = ["circle", "square", "triangle", "line", "arc", "bars", "dots"];
+        let shapes = [
+            "circle", "square", "triangle", "line", "arc", "bars", "dots",
+        ];
         for shape in shapes {
             let specs = vec![spec(shape, "expand", "#ff5577", "medium", "linear", 30)];
             let result = compile(&specs).unwrap();
@@ -703,10 +733,13 @@ mod tests {
 
     #[test]
     fn each_motion_variant_produces_animated_keyframes() {
-        let motions = ["expand", "contract", "pulse", "drift", "rotate", "shake", "appear"];
+        let motions = [
+            "expand", "contract", "pulse", "drift", "rotate", "shake", "appear",
+        ];
         for motion in motions {
             let specs = vec![spec("circle", motion, "#ff5577", "medium", "linear", 30)];
-            let result = compile(&specs).unwrap_or_else(|e| panic!("compile failed for motion {motion}: {e}"));
+            let result = compile(&specs)
+                .unwrap_or_else(|e| panic!("compile failed for motion {motion}: {e}"));
             assert!(
                 has_animated_keyframes(&result[0].layers[0]),
                 "motion '{motion}' produced no animated keyframe in ks"
@@ -719,9 +752,9 @@ mod tests {
     #[test]
     fn compile_produces_one_animation_per_spec() {
         let specs = vec![
-            spec("circle", "expand",  "#ff5577", "large",  "ease_out", 30),
-            spec("line",   "drift",   "#3344aa", "medium", "linear",   24),
-            spec("dots",   "appear",  "#22bb44", "small",  "ease_in",  45),
+            spec("circle", "expand", "#ff5577", "large", "ease_out", 30),
+            spec("line", "drift", "#3344aa", "medium", "linear", 24),
+            spec("dots", "appear", "#22bb44", "small", "ease_in", 45),
         ];
         let result = compile(&specs).unwrap();
         assert_eq!(result.len(), 3);
@@ -731,10 +764,10 @@ mod tests {
     fn compile_sets_correct_metadata() {
         let specs = vec![spec("circle", "expand", "#ff5577", "medium", "linear", 45)];
         let result = compile(&specs).unwrap();
-        assert_eq!(result[0].v,  LOTTIE_VERSION);
+        assert_eq!(result[0].v, LOTTIE_VERSION);
         assert_eq!(result[0].fr, FRAME_RATE);
-        assert_eq!(result[0].w,  CANVAS_W);
-        assert_eq!(result[0].h,  CANVAS_H);
+        assert_eq!(result[0].w, CANVAS_W);
+        assert_eq!(result[0].h, CANVAS_H);
         assert_eq!(result[0].ip, 0);
         assert_eq!(result[0].op, 45);
         assert_eq!(result[0].ddd, 0);
@@ -773,10 +806,23 @@ mod tests {
 
     #[test]
     fn easing_bezier_returns_all_variants_without_panic() {
-        for easing in ["linear", "ease_in", "ease_out", "ease_in_out", "spring", "unknown"] {
+        for easing in [
+            "linear",
+            "ease_in",
+            "ease_out",
+            "ease_in_out",
+            "spring",
+            "unknown",
+        ] {
             let (o, i) = easing_bezier(easing);
-            assert!(o.get("x").is_some(), "out tangent missing x for easing {easing}");
-            assert!(i.get("x").is_some(), "in tangent missing x for easing {easing}");
+            assert!(
+                o.get("x").is_some(),
+                "out tangent missing x for easing {easing}"
+            );
+            assert!(
+                i.get("x").is_some(),
+                "in tangent missing x for easing {easing}"
+            );
         }
     }
 }

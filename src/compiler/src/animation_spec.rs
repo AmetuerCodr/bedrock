@@ -123,6 +123,7 @@ pub async fn design(moments: &[VisualMoment]) -> Result<Vec<AnimationSpec>, Box<
     }
 
     let user_msg = serde_json::to_string(&serde_json::json!({ "moments": moments }))?;
+    eprintln!("calling gemini: animation-spec ({} moments)…", moments.len());
     let raw = gemini::prompt(&user_msg, Some(SYSTEM_PROMPT)).await?;
     let cleaned = gemini::strip_fences(&raw);
 

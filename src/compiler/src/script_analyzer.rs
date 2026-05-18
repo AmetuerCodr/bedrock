@@ -105,6 +105,7 @@ pub async fn analyze(input: ScriptInput) -> Result<Vec<VisualMoment>, Box<dyn st
         "wordGroups": input.word_groups,
     }))?;
 
+    eprintln!("calling gemini: script-analyzer ({n_word_groups} word groups)…");
     let raw = gemini::prompt(&user_msg, Some(SYSTEM_PROMPT)).await?;
     let cleaned = gemini::strip_fences(&raw);
 

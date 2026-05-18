@@ -5,6 +5,7 @@ mod script_analyzer;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    dotenvy::dotenv().ok();
     let subcommand = std::env::args()
         .nth(1)
         .unwrap_or_else(|| "script-analyzer".to_string());
