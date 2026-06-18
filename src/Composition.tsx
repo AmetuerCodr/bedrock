@@ -44,15 +44,10 @@ interface ClipProps {
   TextPosition: string;
 }
 
-/// animations
-
-// animations/letterDrift.ts
-
 export const Clip: React.FC<ClipProps> = ({
   text,
   fontBools,
   fadeDir,
-
   displayFamily,
   bodyFamily,
   animationType,
@@ -135,7 +130,7 @@ export const Clip: React.FC<ClipProps> = ({
           style={{
             position: "absolute",
             // backgroundColor: 'greenyellow',
-            top: `${move}px`,
+            // top: `${move}px`,
           }}
         >
           <div
@@ -152,8 +147,6 @@ export const Clip: React.FC<ClipProps> = ({
           >
             {/* Map over the words and style them individually based on the fontBools array */}
             {words.map((word, index) => {
-              // Safety check in case the LLM messes up the array length
-
               // console.log(wordGroups);
               const isDisplay = fontBools[index] ?? false;
               const a = animationType[index];
@@ -164,9 +157,7 @@ export const Clip: React.FC<ClipProps> = ({
                 damping: 26,
                 stiffness: 70,
               });
-
               // fade && letter drift  && shearSnap
-
               const letterDriftStyle = {
                 transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
                 opacity: opacity,

@@ -143,5 +143,5 @@
   "bodyFont": "inter",
   "displayFont": "bebasNeue",
   "displayFontColor": "#FFD700",
-  "TextPosition": "Center"
+  "TextPosition": "center"
 }
