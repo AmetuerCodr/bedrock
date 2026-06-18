@@ -17,6 +17,7 @@ export const VideoSchema = z.object({
   displayFont: z.string(),
   displayFontColor: z.string(),
   TextPosition: TextPosition,
+  Transparent: z.boolean()
 });
 
 export type VideoData = z.infer<typeof VideoSchema>;

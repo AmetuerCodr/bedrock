@@ -1,46 +1,40 @@
 {
-  "script": "The relentless pursuit of greatness. The obsession that separates legends from everyone else. What it truly costs to become elite.",
+  "script": "If you want to become great, you have to push yourself beyond your limits. Greatness isn't found in comfort. It's earned in the struggle.",
   "wordGroups": [
-    "The relentless",
-    "pursuit",
-    "of greatness",
-    "The obsession",
-    "that separates",
-    "legends",
-    "from everyone else",
-    "What it",
-    "truly costs",
+    "If you want",
     "to become",
-    "elite"
+    "great",
+    "you have to",
+    "push yourself",
+    "beyond your",
+    "limits",
+    "Greatness isnt",
+    "found in",
+    "comfort",
+    "Its earned",
+    "in the",
+    "struggle"
   ],
   "clipDurationInFrames": [
-    20,
     30,
-    30,
-    22,
     20,
-    35,
     40,
-    18,
+    30,
+    35,
+    20,
+    45,
+    30,
+    20,
+    40,
     25,
     20,
-    40
+    50
   ],
   "DisplayFontBoolArray": [
     [
       false,
+      false,
       false
-    ],
-    [
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      true
     ],
     [
       false,
@@ -55,8 +49,26 @@
       false
     ],
     [
+      true,
+      true
+    ],
+    [
       false,
       false
+    ],
+    [
+      true
+    ],
+    [
+      true,
+      false
+    ],
+    [
+      false,
+      false
+    ],
+    [
+      true
     ],
     [
       false,
@@ -76,51 +88,50 @@
     "bottom",
     "left",
     "right",
-    "bottom",
-    "top",
     "left",
+    "bottom",
+    "right",
+    "left",
+    "top",
     "right",
     "left",
     "bottom"
   ],
   "animationType": [
     [
-      "Fade",
       "Fade"
     ],
     [
-      "letterDrift"
-    ],
-    [
-      "Fade",
-      "shearSnap"
-    ],
-    [
-      "Fade",
-      "letterDrift"
-    ],
-    [
-      "Fade",
       "Fade"
     ],
     [
       "shearSnap"
     ],
     [
-      "Fade",
-      "Fade",
       "Fade"
     ],
     [
-      "Fade",
-      "Fade"
-    ],
-    [
-      "Fade",
       "letterDrift"
     ],
     [
-      "Fade",
+      "Fade"
+    ],
+    [
+      "shearSnap"
+    ],
+    [
+      "Fade"
+    ],
+    [
+      "Fade"
+    ],
+    [
+      "letterDrift"
+    ],
+    [
+      "Fade"
+    ],
+    [
       "Fade"
     ],
     [
@@ -130,6 +141,7 @@
   "fadeInTransitionBool": [
     true,
     true,
+    false,
     true,
     true,
     true,
@@ -138,10 +150,12 @@
     true,
     true,
     true,
+    true,
     false
   ],
-  "bodyFont": "inter",
-  "displayFont": "bebasNeue",
-  "displayFontColor": "#FFD700",
-  "TextPosition": "center"
+  "bodyFont": "poppins",
+  "displayFont": "playfairDisplay",
+  "displayFontColor": "#F97316",
+  "TextPosition": "Center",
+  "Transparent": true
 }

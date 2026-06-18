@@ -46,6 +46,7 @@ export const RemotionRoot: React.FC = () => {
         fadeInTransitionBool: [true, true, true],
         bodyFont: "inter",
         displayFont: "montserrat",
+        Transparent: false,
       }}
       durationInFrames={tempVideoData.durationInFrames}
       fps={tempVideoData.fps}

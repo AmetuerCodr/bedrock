@@ -128,6 +128,11 @@ export async function generateScript(prompt: string) {
      A single string — controlling the position of the text. Only three valid values: "Top", "Center", "Bottom".
      __
 
+  ---
+  12. "Transparent (boolean)"
+  A boolean value - controlling whether the video is transparent or not; useful if the user wants to add it over a video when rendering the generated video.
+  - Transparent defaults to false unless the user explicitly asks for transparent video or implies "make this so that i can add it over b-roll when i export later"
+
   `,
     },
   });

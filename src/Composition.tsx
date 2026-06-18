@@ -42,6 +42,7 @@ interface ClipProps {
   color: string;
   wordGroups: string[];
   TextPosition: string;
+  Transparent: boolean;
 }
 
 export const Clip: React.FC<ClipProps> = ({
@@ -53,6 +54,7 @@ export const Clip: React.FC<ClipProps> = ({
   animationType,
   TextPosition,
   color,
+  Transparent,
 }) => {
   const frame = useCurrentFrame();
   const easeOut = Easing.out(Easing.cubic);
@@ -237,6 +239,7 @@ export const Video: React.FC<VideoData> = ({
   displayFont,
   displayFontColor,
   TextPosition,
+  Transparent,
 }) => {
   const [bodyFamily, setBodyFamily] = useState("sans-serif");
   const [displayFamily, setDisplayFamily] = useState("serif");
@@ -249,7 +252,9 @@ export const Video: React.FC<VideoData> = ({
   let fromFrame = 0;
 
   return (
-    <AbsoluteFill style={{ backgroundColor: "#0A0A0A" }}>
+    <AbsoluteFill
+      style={{ backgroundColor: Transparent ? "#0A0A0A00" : "#03045e" }}
+    >
       {wordGroups.map((text, i) => {
         const start = fromFrame;
         fromFrame += clipDurationInFrames[i];
@@ -261,6 +266,7 @@ export const Video: React.FC<VideoData> = ({
             durationInFrames={clipDurationInFrames[i]}
           >
             <Clip
+              Transparent={Transparent}
               wordGroups={wordGroups}
               text={text}
               animationType={animationType[i]}
