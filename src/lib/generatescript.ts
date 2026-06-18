@@ -3,6 +3,7 @@ import { parseArgs } from "util";
 import { VideoSchema } from "./schema";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
+
 // Derive the JSON schema from your Zod schema — no manual sync needed
 const videoJsonSchema = zodToJsonSchema(VideoSchema);
 

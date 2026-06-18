@@ -1,162 +1,133 @@
 {
-  "script": "Purpose isn't a destination we find on a map. It's the quiet friction between who you are and the work you can't leave alone. It lives in the dirt, the repetition, and the small, stubborn choices that define your pulse. Stop looking for a sign. Just look at your hands. Purpose is not a place you arrive. It's is the map you draw with every step.",
+  "script": "The relentless pursuit of greatness. The obsession that separates legends from everyone else. What it truly costs to become elite.",
   "wordGroups": [
-    "Purpose",
-    "isn't a",
-    "destination",
-    "we find",
-    "on a map",
-    "It's the",
-    "quiet friction",
-    "between who",
-    "you are",
-    "and the work",
-    "you can't",
-    "leave alone",
-    "It lives",
-    "in the dirt",
-    "the repetition",
-    "and the",
-    "small stubborn",
-    "choices",
-    "that define",
-    "your pulse",
-    "Stop",
-    "looking for",
-    "a sign",
-    "Just look",
-    "at your hands",
-    "Purpose is not",
-    "a place",
-    "you arrive",
-    "It is",
-    "the map",
-    "you draw",
-    "with every",
-    "step"
+    "The relentless",
+    "pursuit",
+    "of greatness",
+    "The obsession",
+    "that separates",
+    "legends",
+    "from everyone else",
+    "What it",
+    "truly costs",
+    "to become",
+    "elite"
   ],
   "clipDurationInFrames": [
-    35, 18, 35, 18, 38, 15, 25, 18, 20, 25, 18, 35, 20, 30, 27, 15, 22, 28, 20,
-    35, 45, 20, 35, 20, 40, 20, 22, 38, 18, 25, 25, 20, 50
+    20,
+    30,
+    30,
+    22,
+    20,
+    35,
+    40,
+    18,
+    25,
+    20,
+    40
   ],
   "DisplayFontBoolArray": [
-    [true],
-    [false, false],
-    [true],
-    [false, false],
-    [false, false, true],
-    [false, false],
-    [false, true],
-    [false, false],
-    [false, false],
-    [false, false, true],
-    [false, false],
-    [false, true],
-    [false, false],
-    [false, false, true],
-    [false, true],
-    [false, false],
-    [false, true],
-    [true],
-    [false, false],
-    [false, true],
-    [true],
-    [false, false],
-    [false, true],
-    [false, true],
-    [false, false, true],
-    [false, false],
-    [false, false, true],
-    [false, true],
-    [false, false],
-    [false, true],
-    [false, true],
-    [false, false],
-    [true]
+    [
+      false,
+      false
+    ],
+    [
+      true
+    ],
+    [
+      false,
+      true
+    ],
+    [
+      false,
+      true
+    ],
+    [
+      false,
+      false
+    ],
+    [
+      true
+    ],
+    [
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false
+    ],
+    [
+      false,
+      true
+    ],
+    [
+      false,
+      false
+    ],
+    [
+      true
+    ]
   ],
   "defaultTextVariant": [
+    "left",
+    "right",
     "bottom",
-    "left",
-    "right",
-    "left",
-    "bottom",
-    "right",
-    "left",
-    "right",
-    "left",
-    "bottom",
-    "right",
-    "top",
-    "left",
-    "right",
     "left",
     "right",
     "bottom",
     "top",
     "left",
     "right",
-    "bottom",
     "left",
-    "right",
-    "top",
-    "bottom",
-    "left",
-    "right",
-    "bottom",
-    "left",
-    "right",
-    "left",
-    "right",
     "bottom"
   ],
   "animationType": [
-    ["letterDrift"],
-    ["Fade", "Fade"],
-    ["shearSnap"],
-    ["Fade", "Fade"],
-    ["Fade", "Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["Fade", "Fade"],
-    ["Fade", "Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["Fade", "shearSnap"],
-    ["Fade", "Fade"],
-    ["Fade", "Fade", "letterDrift"],
-    ["Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["Fade", "letterDrift"],
-    ["shearSnap"],
-    ["Fade", "Fade"],
-    ["Fade", "letterDrift"],
-    ["shearSnap"],
-    ["Fade", "Fade"],
-    ["Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["Fade", "Fade", "shearSnap"],
-    ["Fade", "Fade"],
-    ["Fade", "Fade", "letterDrift"],
-    ["Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["Fade", "letterDrift"],
-    ["Fade", "letterDrift"],
-    ["Fade", "Fade"],
-    ["letterDrift"]
+    [
+      "Fade",
+      "Fade"
+    ],
+    [
+      "letterDrift"
+    ],
+    [
+      "Fade",
+      "shearSnap"
+    ],
+    [
+      "Fade",
+      "letterDrift"
+    ],
+    [
+      "Fade",
+      "Fade"
+    ],
+    [
+      "shearSnap"
+    ],
+    [
+      "Fade",
+      "Fade",
+      "Fade"
+    ],
+    [
+      "Fade",
+      "Fade"
+    ],
+    [
+      "Fade",
+      "letterDrift"
+    ],
+    [
+      "Fade",
+      "Fade"
+    ],
+    [
+      "shearSnap"
+    ]
   ],
   "fadeInTransitionBool": [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
     true,
     true,
     true,
@@ -165,23 +136,12 @@
     false,
     true,
     true,
-  false,
     true,
     true,
-    true,
-    true,
-    true,
-    true,
-
-    true,
-    true,
-    true,
-    true,
-    true,
-    true
+    false
   ],
-  "bodyFont": "lato",
-  "displayFont": "dmSerifDisplay",
-  "displayFontColor": "#facc15",
+  "bodyFont": "inter",
+  "displayFont": "bebasNeue",
+  "displayFontColor": "#FFD700",
   "TextPosition": "Center"
 }

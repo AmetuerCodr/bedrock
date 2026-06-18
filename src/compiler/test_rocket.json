@@ -1,0 +1,67 @@
+[
+  {
+    "duration": 90,
+    "layers": [
+      {
+        "shape": "circle",
+        "color": "#888888",
+        "size": "large",
+        "position": [{"frame":0,"x":250,"y":420},{"frame":30,"x":260,"y":440}],
+        "scale_start": 0,
+        "scale_end": 250,
+        "opacity_in": 0,
+        "opacity_out": 40,
+        "delay": 0,
+        "easing": "ease_out"
+      },
+      {
+        "shape": "triangle",
+        "color": "#ff4400",
+        "size": "medium",
+        "position": [{"frame":0,"x":250,"y":400},{"frame":90,"x":250,"y":80}],
+        "scale_start": 100,
+        "scale_end": 60,
+        "opacity_in": 0,
+        "opacity_out": 15,
+        "delay": 5,
+        "easing": "ease_in"
+      },
+      {
+        "shape": "triangle",
+        "color": "#cccccc",
+        "size": "small",
+        "position": [{"frame":0,"x":250,"y":380},{"frame":90,"x":250,"y":50}],
+        "scale_start": 100,
+        "scale_end": 100,
+        "opacity_in": 0,
+        "opacity_out": 10,
+        "delay": 0,
+        "easing": "ease_in"
+      },
+      {
+        "shape": "dots",
+        "color": "#ffdd00",
+        "size": "small",
+        "position": [{"frame":0,"x":250,"y":410},{"frame":60,"x":250,"y":460}],
+        "scale_start": 0,
+        "scale_end": 200,
+        "opacity_in": 0,
+        "opacity_out": 30,
+        "delay": 8,
+        "easing": "spring"
+      },
+      {
+        "shape": "arc",
+        "color": "#ff8800",
+        "size": "medium",
+        "position": [{"frame":0,"x":250,"y":390},{"frame":90,"x":250,"y":100}],
+        "scale_start": 80,
+        "scale_end": 30,
+        "opacity_in": 5,
+        "opacity_out": 20,
+        "delay": 10,
+        "easing": "ease_in_out"
+      }
+    ]
+  }
+]
