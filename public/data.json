@@ -1,146 +1,197 @@
 {
-  "script": "If you want to become great, you have to push yourself beyond your limits. Greatness isn't found in comfort. It's earned in the struggle.",
+  "script": "What you tolerate today will sit on a throne tomorrow. What are you tolerating? What are you compromising that is flinging away your fearless confidence, that is making your faith turn to fear? What are you tolerating today that you know you have no business tolerating? What people are you allowing in your circle and in your life to speak into your life that's paralyzing your purpose? What you tolerate today will sit on a throne tomorrow.",
   "wordGroups": [
-    "If you want",
-    "to become",
-    "great",
-    "you have to",
-    "push yourself",
-    "beyond your",
-    "limits",
-    "Greatness isnt",
-    "found in",
-    "comfort",
-    "Its earned",
-    "in the",
-    "struggle"
+    "What you tolerate",
+    "today",
+    "will sit on a",
+    "throne",
+    "tomorrow",
+    "What are you",
+    "tolerating",
+    "What are you",
+    "compromising",
+    "that is flinging away",
+    "your fearless",
+    "confidence",
+    "that is making",
+    "your faith",
+    "turn to",
+    "fear",
+    "What are you tolerating",
+    "today that you know",
+    "you have no",
+    "business",
+    "tolerating",
+    "What people are you",
+    "allowing in your circle",
+    "and in your life",
+    "to speak into",
+    "your life",
+    "thats paralyzing",
+    "your",
+    "purpose",
+    "What you tolerate",
+    "today",
+    "will sit on a",
+    "throne",
+    "tomorrow"
   ],
   "clipDurationInFrames": [
+    32,
+    22,
+    32,
     30,
-    20,
-    40,
+    32,
+    26,
     30,
-    35,
+    26,
+    28,
+    34,
     20,
-    45,
+    26,
+    28,
+    20,
+    18,
+    37,
+    32,
+    32,
+    26,
+    24,
+    36,
+    32,
+    34,
+    32,
+    28,
+    18,
+    22,
+    20,
+    37,
+    32,
+    22,
+    32,
     30,
-    20,
-    40,
-    25,
-    20,
-    50
+    36
   ],
   "DisplayFontBoolArray": [
-    [
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false
-    ],
-    [
-      true
-    ],
-    [
-      false,
-      false,
-      false
-    ],
-    [
-      true,
-      true
-    ],
-    [
-      false,
-      false
-    ],
-    [
-      true
-    ],
-    [
-      true,
-      false
-    ],
-    [
-      false,
-      false
-    ],
-    [
-      true
-    ],
-    [
-      false,
-      true
-    ],
-    [
-      false,
-      false
-    ],
-    [
-      true
-    ]
+    [false, false, true],
+    [true],
+    [false, false, false, false],
+    [true],
+    [true],
+    [false, false, false],
+    [true],
+    [false, false, false],
+    [true],
+    [false, false, true, false],
+    [false, true],
+    [true],
+    [false, false, true],
+    [false, true],
+    [false, false],
+    [true],
+    [false, false, false, true],
+    [true, false, false, false],
+    [false, false, false],
+    [true],
+    [true],
+    [false, true, false, false],
+    [true, false, false, false],
+    [false, false, false, true],
+    [false, true, false],
+    [false, true],
+    [false, true],
+    [false],
+    [true],
+    [false, false, true],
+    [true],
+    [false, false, false, false],
+    [true],
+    [true]
   ],
   "defaultTextVariant": [
     "left",
+    "bottom",
+    "right",
+    "top",
+    "bottom",
+    "left",
+    "top",
     "right",
     "bottom",
     "left",
     "right",
+    "top",
+    "left",
+    "right",
     "left",
     "bottom",
+    "right",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "left",
+    "right",
+    "left",
     "right",
     "left",
     "top",
     "right",
+    "bottom",
     "left",
+    "top",
+    "right",
+    "top",
     "bottom"
   ],
   "animationType": [
-    [
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "shearSnap"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "letterDrift"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "shearSnap"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "letterDrift"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "Fade"
-    ],
-    [
-      "shearSnap"
-    ]
+    ["Fade"],
+    ["letterDrift"],
+    ["Fade"],
+    ["shearSnap"],
+    ["Fade"],
+    ["Fade"],
+    ["shearSnap"],
+    ["Fade"],
+    ["letterDrift"],
+    ["Fade"],
+    ["Fade"],
+    ["letterDrift"],
+    ["Fade"],
+    ["Fade"],
+    ["Fade"],
+    ["shearSnap"],
+    ["Fade"],
+    ["Fade"],
+    ["Fade"],
+    ["letterDrift"],
+    ["shearSnap"],
+    ["Fade"],
+    ["Fade"],
+    ["Fade"],
+    ["letterDrift"],
+    ["Fade"],
+    ["Fade"],
+    ["Fade"],
+    ["shearSnap"],
+    ["Fade"],
+    ["letterDrift"],
+    ["Fade"],
+    ["shearSnap"],
+    ["Fade"]
   ],
   "fadeInTransitionBool": [
     true,
     true,
+    true,
+    false,
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    true,
     false,
     true,
     true,
@@ -150,12 +201,24 @@
     true,
     true,
     true,
+    false,
     true,
-    false
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    false,
+    true
   ],
   "bodyFont": "poppins",
   "displayFont": "playfairDisplay",
-  "displayFontColor": "#F97316",
+  "displayFontColor": "#fcec03",
   "TextPosition": "Center",
   "Transparent": true
 }
