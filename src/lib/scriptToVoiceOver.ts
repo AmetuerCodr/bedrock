@@ -1,5 +1,11 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+type State = "running" | "error" | "idle";
+
+
 export async function scriptToVoiceOver(text: string) {
+  let state: State = "idle";
+  state = "running"
   console.log("program running");
   if (!Bun.env.ELEVENLABS_VOICE_ID || !Bun.env.ELEVENLABS_KEY) return;
   const elevenlabsclient = new ElevenLabsClient({
@@ -23,5 +29,6 @@ export async function scriptToVoiceOver(text: string) {
     const buf = await new Response(audio as ReadableStream).arrayBuffer();
     writer.write(buf);
     console.log("voiceover written to disk!");
+    state = "idle"
   }
 }

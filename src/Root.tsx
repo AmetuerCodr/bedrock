@@ -11,7 +11,7 @@ export const RemotionRoot: React.FC = () => {
     height: number;
   }
   const tempVideoData: VideoMetaData = {
-    fps: 30, // must always be 30 fps for animation_spec.rs to work properly
+    fps: 30, // must always be 30 fps
     durationInFrames: 45,
     width: 1080,
     height: 1080,
